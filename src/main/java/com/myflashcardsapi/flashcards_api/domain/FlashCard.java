@@ -28,10 +28,6 @@ public class FlashCard {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "flashcard_tags",

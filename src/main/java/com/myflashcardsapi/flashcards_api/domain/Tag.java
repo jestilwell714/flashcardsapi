@@ -1,17 +1,13 @@
 package com.myflashcardsapi.flashcards_api.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Tag")
+@Table(name = "tags")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +15,7 @@ import java.util.Set;
 public class Tag {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -28,6 +25,6 @@ public class Tag {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(mappedBy = "tags")
-    private Set<FlashCard> flashcards = new HashSet<>();
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    private Set<FlashCard> flashCards = new HashSet<>();
 }
