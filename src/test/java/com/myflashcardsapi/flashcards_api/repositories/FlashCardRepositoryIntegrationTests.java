@@ -1,142 +1,66 @@
 package com.myflashcardsapi.flashcards_api.repositories;
 import com.myflashcardsapi.flashcards_api.domain.*;
+import com.myflashcardsapi.flashcards_api.util.TestEntityBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import(TestEntityBuilder.class)
 public class FlashCardRepositoryIntegrationTests {
-
+    @Autowired
+    private TestEntityBuilder testEntityBuilder;
     @Autowired
     private FlashCardRepository underTest;
 
-    @Autowired
-    private TestEntityManager entityManager;
 
-    private User user;
 
-    private Folder folder;
-    private Deck deck;
-
-    private Deck deck2;
-
-    private Tag tag;
-
-    private Tag tag2;
-    private FlashCard flashCard1;
-
-    private FlashCard flashCard2;
-
-    private FlashCard flashCard3;
 
     @BeforeEach
     void setUp() {
 
-        user = User.builder()
-                .username("user")
-                .password("password")
-                .build();
-
-        tag = Tag.builder()
-                .name("Algebra")
-                .user(user)
-                .build();
-
-        tag2 = Tag.builder()
-                .name("calculus")
-                .user(user)
-                .build();
-
-        folder = Folder.builder()
-                .name("Math")
-                .user(user)
-                .build();
-
-        deck = Deck.builder()
-                .name("Math202")
-                .user(user)
-                .folder(folder)
-                .build();
-
-        deck2 = Deck.builder()
-                .name("Math303")
-                .user(user)
-                .folder(folder)
-                .build();
-
-
-        flashCard1 = FlashCard.builder()
-                .question("what is 2 + 2")
-                .answer("4")
-                .deck(deck)
-                .tags(Set.of(tag))
-                .build();
-
-
-
-        flashCard2 = FlashCard.builder()
-                .question("what is 8 / 2")
-                .answer("4")
-                .deck(deck)
-                .tags(Set.of(tag2))
-                .build();
-
-        flashCard3 = FlashCard.builder()
-                .question("what is 3 squared")
-                .answer("9")
-                .deck(deck2)
-                .tags(Set.of(tag))
-                .build();
-
-        entityManager.persistAndFlush(user);
-        entityManager.persistAndFlush(folder);
-        entityManager.persistAndFlush(tag);
-        entityManager.persistAndFlush(tag2);
-        entityManager.persistAndFlush(deck);
-        entityManager.persistAndFlush(deck2);
-        entityManager.persistAndFlush(flashCard1);
-        entityManager.persistAndFlush(flashCard2);
-        entityManager.persistAndFlush(flashCard3);
+        testEntityBuilder.testEntitySetUp();
     }
 
     @Test
     void findByDeckIdShouldReturnAllFlashCardsForDeck() {
-        List<FlashCard> flashCards = underTest.findByDeckId(deck.getId());
-        assertThat(flashCards).hasSize(2);
-        assertThat(flashCards).contains(flashCard1, flashCard2);
+        List<FlashCard> flashCards = underTest.findByDeckId(testEntityBuilder.getDeck1().getId());
+        assertThat(flashCards).hasSize(3);
+        assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3());
     }
 
     @Test
     void findByUserIdShouldReturnAllFlashCardsForUser() {
-        List<FlashCard> flashCards = underTest.findByDeckUserId(user.getId());
-        assertThat(flashCards).hasSize(3);
-        assertThat(flashCards).contains(flashCard1, flashCard2, flashCard3);
+        List<FlashCard> flashCards = underTest.findByDeckUserId(testEntityBuilder.getUser().getId());
+        assertThat(flashCards).hasSize(5);
+        assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3(), testEntityBuilder.getFlashCard4(), testEntityBuilder.getFlashCard5());
     }
 
     @Test
     void findByTagIdShouldReturnAllFlashCardsForTag() {
-        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(tag.getId()));
-        assertThat(flashCards).hasSize(2);
-        assertThat(flashCards).contains(flashCard1, flashCard3);
+        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(testEntityBuilder.getDataStructureTag().getId()));
+        assertThat(flashCards).hasSize(3);
+        assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard4());
     }
 
     @Test
     void findByTagIdShouldReturnAllFlashCardsForTags() {
-        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(tag.getId(), tag2.getId()));
-        assertThat(flashCards).hasSize(3);
-        assertThat(flashCards).contains(flashCard1, flashCard2, flashCard3);
+        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(testEntityBuilder.getDataStructureTag().getId(), testEntityBuilder.getAlgorithmsTag().getId()));
+        assertThat(flashCards).hasSize(4);
+        assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3(), testEntityBuilder.getFlashCard4());
     }
 
     @Test
     void findByFolderIdShouldReturnAllFlashCardsForFolder() {
-        List<FlashCard> flashCards = underTest.findByDeckFolderId(folder.getId());
-        assertThat(flashCards).hasSize(3);
-        assertThat(flashCards).contains(flashCard1, flashCard2, flashCard3);
+        List<FlashCard> flashCards = underTest.findByDeckFolderId(testEntityBuilder.getCosc201Folder().getId());
+        assertThat(flashCards).hasSize(4);
+        assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3(), testEntityBuilder.getFlashCard4());
     }
 }

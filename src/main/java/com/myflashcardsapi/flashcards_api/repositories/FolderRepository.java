@@ -12,7 +12,7 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     // Find all folders from a specific user
     List<Folder> findByUserId(Long userId);
     // Find all folders for a specific parent folder
-    List<Folder> findByParentFolder(Long folderId);
+    List<Folder> findByParentFolderId(Long folderId);
     // Find all folders that do not have a parent folder (are at the root level)
     List<Folder> findByParentFolderIsNullAndUserId(Long userId);
 }
