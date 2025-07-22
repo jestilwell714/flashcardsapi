@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import(TestEntityBuilder.class)
-public class DeckRepositoriesIntegrationTests {
+public class DeckRepositoryIntegrationTests {
     @Autowired
     private TestEntityBuilder testEntityBuilder;
     @Autowired
