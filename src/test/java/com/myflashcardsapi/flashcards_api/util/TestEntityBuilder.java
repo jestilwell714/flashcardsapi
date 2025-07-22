@@ -13,7 +13,6 @@ import java.util.Set;
 /**
  * Spring managed utility class that creates test entities
  */
-@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

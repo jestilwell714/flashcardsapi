@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,9 +41,22 @@ public class DeckRepositoryIntegrationTests {
     }
 
     @Test
-    void findByFolderUserIdShouldReturnAllDecksForFolder() {
-        List<Deck> decks = underTest.findByFolderId(testEntityBuilder.getCosc201Folder().getId());
+    void findByFolderUserAndUserIdShouldReturnAllDecksForFolder() {
+        List<Deck> decks = underTest.findByFolderIdAndUserId(testEntityBuilder.getCosc201Folder().getId(), testEntityBuilder.getUser().getId());
         assertThat(decks).hasSize(2);
         assertThat(decks).contains(testEntityBuilder.getDeck1(), testEntityBuilder.getDeck2());
+    }
+
+    @Test
+    void findByNameIgnoreCaseAndUserIdShouldReturnDeckForName() {
+        List<Deck> deck = underTest.findByNameIgnoreCaseAndUserId(testEntityBuilder.getDeck1().getName(), testEntityBuilder.getUser().getId());
+        assertThat(deck).hasSize(2);
+        assertThat(deck).contains(testEntityBuilder.getDeck1(), testEntityBuilder.getDeck3());
+    }
+
+    @Test
+    void existsByNameIgnoreCaseAndUserIdShouldReturnTrue() {
+        boolean exists = underTest.existsByNameIgnoreCaseAndUserId(testEntityBuilder.getDeck2().getName(), testEntityBuilder.getUser().getId());
+        assertThat(exists).isTrue();
     }
 }

@@ -28,7 +28,7 @@ public class FlashCardRepositoryIntegrationTests {
 
     @Test
     void findByDeckIdShouldReturnAllFlashCardsForDeck() {
-        List<FlashCard> flashCards = underTest.findByDeckId(testEntityBuilder.getDeck1().getId());
+        List<FlashCard> flashCards = underTest.findByDeckIdAndDeckUserId(testEntityBuilder.getDeck1().getId(), testEntityBuilder.getUser().getId());
         assertThat(flashCards).hasSize(3);
         assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3());
     }
@@ -42,21 +42,21 @@ public class FlashCardRepositoryIntegrationTests {
 
     @Test
     void findByTagIdShouldReturnAllFlashCardsForTag() {
-        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(testEntityBuilder.getDataStructureTag().getId()));
+        List<FlashCard> flashCards = underTest.findByTagsIdInAndDeckUserId(List.of(testEntityBuilder.getDataStructureTag().getId()), testEntityBuilder.getUser().getId());
         assertThat(flashCards).hasSize(3);
         assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard4());
     }
 
     @Test
     void findByTagIdShouldReturnAllFlashCardsForTags() {
-        List<FlashCard> flashCards = underTest.findByTagsIdIn(List.of(testEntityBuilder.getDataStructureTag().getId(), testEntityBuilder.getAlgorithmsTag().getId()));
+        List<FlashCard> flashCards = underTest.findByTagsIdInAndDeckUserId(List.of(testEntityBuilder.getDataStructureTag().getId(), testEntityBuilder.getAlgorithmsTag().getId()), testEntityBuilder.getUser().getId());
         assertThat(flashCards).hasSize(4);
         assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3(), testEntityBuilder.getFlashCard4());
     }
 
     @Test
     void findByFolderIdShouldReturnAllFlashCardsForFolder() {
-        List<FlashCard> flashCards = underTest.findByDeckFolderId(testEntityBuilder.getCosc201Folder().getId());
+        List<FlashCard> flashCards = underTest.findByDeckFolderIdAndDeckUserId(testEntityBuilder.getCosc201Folder().getId(), testEntityBuilder.getUser().getId());
         assertThat(flashCards).hasSize(4);
         assertThat(flashCards).contains(testEntityBuilder.getFlashCard1(), testEntityBuilder.getFlashCard2(), testEntityBuilder.getFlashCard3(), testEntityBuilder.getFlashCard4());
     }

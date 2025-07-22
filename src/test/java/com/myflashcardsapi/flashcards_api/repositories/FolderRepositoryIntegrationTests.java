@@ -41,7 +41,7 @@ public class FolderRepositoryIntegrationTests {
 
         @Test
         void findByParentFolderIsNullAndUserIdShouldReturnAllRootFolders() {
-                List<Folder> folders = underTest.findByParentFolderIsNullAndUserId((testEntityBuilder.getRootFolder().getId()));
+                List<Folder> folders = underTest.findByParentFolderIsNullAndUserId((testEntityBuilder.getUser().getId()));
                 assertThat(folders).containsExactly(testEntityBuilder.getRootFolder());
         }
 }
