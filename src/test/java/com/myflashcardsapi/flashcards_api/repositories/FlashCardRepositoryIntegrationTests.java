@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +25,12 @@ public class FlashCardRepositoryIntegrationTests {
     void setUp() {
 
         testEntityBuilder.testEntitySetUp();
+    }
+
+    @Test
+    void findByIdAndDeckUserIdShouldReturnFlashCard() {
+        Optional<FlashCard> flashCard = underTest.findByIdAndDeckUserId(testEntityBuilder.getFlashCard4().getId(), testEntityBuilder.getDeck2().getUser().getId());
+        assertThat(flashCard).contains(testEntityBuilder.getFlashCard4());
     }
 
     @Test
