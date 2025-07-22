@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +27,12 @@ public class FolderRepositoryIntegrationTests {
         }
 
         @Test
+        void findByIdAndUserIdShouldReturnFolder() {
+                Optional<Folder> folder = underTest.findByIdAndUserId(testEntityBuilder.getCosc204Folder().getId(), testEntityBuilder.getUser().getId());
+                assertThat(folder).contains(testEntityBuilder.getCosc204Folder());
+        }
+
+        @Test
         void findByUserIdShouldReturnAllFoldersForUser() {
                 List<Folder> folders= underTest.findByUserId(testEntityBuilder.getUser().getId());
                 assertThat(folders).hasSize(3);
@@ -33,8 +40,8 @@ public class FolderRepositoryIntegrationTests {
         }
 
         @Test
-        void findByParentFolderIdShouldReturnAllFoldersForParentFolder() {
-                List<Folder> folders = underTest.findByParentFolderId(testEntityBuilder.getRootFolder().getId());
+        void findByParentFolderIdAndUserIdShouldReturnAllFoldersForParentFolder() {
+                List<Folder> folders = underTest.findByParentFolderIdAndUserId(testEntityBuilder.getRootFolder().getId(), testEntityBuilder.getUser().getId());
                 assertThat(folders).hasSize(2);
                 assertThat(folders).contains(testEntityBuilder.getCosc201Folder(), testEntityBuilder.getCosc204Folder());
         }
@@ -43,5 +50,11 @@ public class FolderRepositoryIntegrationTests {
         void findByParentFolderIsNullAndUserIdShouldReturnAllRootFolders() {
                 List<Folder> folders = underTest.findByParentFolderIsNullAndUserId((testEntityBuilder.getUser().getId()));
                 assertThat(folders).containsExactly(testEntityBuilder.getRootFolder());
+        }
+
+        @Test
+        void existsByNameIgnoreCaseAndParentFolderIdAndUserIdShouldReturnTrue() {
+                boolean exists = underTest.existsByNameIgnoreCaseAndParentFolderIdAndUserId(testEntityBuilder.getCosc201Folder().getName(), testEntityBuilder.getRootFolder().getId(), testEntityBuilder.getUser().getId());
+                assertThat(exists).isTrue();
         }
 }
