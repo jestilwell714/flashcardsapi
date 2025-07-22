@@ -147,6 +147,7 @@ public class TestEntityBuilder {
         entityManager.persistAndFlush(user);
         entityManager.persistAndFlush(dataStructureTag);
         entityManager.persistAndFlush(algorithmsTag);
+        entityManager.persistAndFlush(operatingSystemsTag);
         entityManager.persistAndFlush(rootFolder);
         entityManager.persistAndFlush(cosc201Folder);
         entityManager.persistAndFlush(cosc204Folder);
