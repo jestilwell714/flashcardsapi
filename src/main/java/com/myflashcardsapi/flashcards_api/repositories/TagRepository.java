@@ -18,7 +18,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     // Finds all the tags for its id, ensuring that its the user who owns it
     Optional<Tag> findByIdAndUserId(Long id, Long userId);
     // Find all tags belonging to a specific user and whose name are in a given list
-    List<Tag> findByNameInAndUser_Id(List<String> names, Long userId)
+    List<Tag> findByNameInAndUser_Id(List<String> names, Long userId);
     // checks if a tag with a specific name exists for a given user
     boolean existsByNameIgnoreCaseAndUser_Id(String name, Long userId);
 }
