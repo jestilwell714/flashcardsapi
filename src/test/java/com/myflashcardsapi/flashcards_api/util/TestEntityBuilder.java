@@ -1,7 +1,6 @@
 package com.myflashcardsapi.flashcards_api.util;
 
 import com.myflashcardsapi.flashcards_api.domain.*;
-import com.myflashcardsapi.flashcards_api.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +32,9 @@ public class TestEntityBuilder {
     private Deck deck1;
     private Deck deck2;
     private Deck deck3;
+
+    private Deck deck4;
+
     private FlashCard flashCard1;
     private FlashCard flashCard2;
     private FlashCard flashCard3;
@@ -100,6 +102,11 @@ public class TestEntityBuilder {
                 .user(user)
                 .build();
 
+        deck4 = Deck.builder()
+                .name("Finance")
+                .user(user)
+                .build();
+
         flashCard1 = FlashCard.builder()
                 .question("What is a stack?")
                 .answer("A linear data structure that follows the LIFO (Last-In, First-Out) principle. Operations include Push (add) and Pop (remove).")
@@ -146,6 +153,7 @@ public class TestEntityBuilder {
         entityManager.persistAndFlush(deck1);
         entityManager.persistAndFlush(deck2);
         entityManager.persistAndFlush(deck3);
+        entityManager.persistAndFlush(deck4);
         entityManager.persistAndFlush(flashCard1);
         entityManager.persistAndFlush(flashCard2);
         entityManager.persistAndFlush(flashCard3);
