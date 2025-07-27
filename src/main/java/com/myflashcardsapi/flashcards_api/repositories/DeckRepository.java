@@ -20,5 +20,5 @@ public interface DeckRepository extends JpaRepository<Deck, Long> {
     // Find decks by its name and the id of the user who owns it
     List<Deck> findByNameIgnoreCaseAndUserId(String name, Long userId);
     // Check if a deck with a specific deck exists
-    boolean existsByNameIgnoreCaseAndUserId(String name, Long userId);
+    boolean existsByNameIgnoreCaseUserIdAndFolderId(String name, Long userId, Long folderId);
 }

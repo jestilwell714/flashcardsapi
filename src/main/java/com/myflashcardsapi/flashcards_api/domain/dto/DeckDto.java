@@ -21,9 +21,9 @@ public class DeckDto {
 
     private String name;
 
-    private User user;
+    private Long userId;
 
-    private Folder folder;
+    private Long folderId;
 
-    private List<FlashCard> flashcards;
+    private List<Long> flashCardIds;
 }
