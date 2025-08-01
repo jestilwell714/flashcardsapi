@@ -3,6 +3,7 @@ package com.myflashcardsapi.flashcards_api.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,5 +27,5 @@ public class Tag {
     private User user;
 
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
-    private Set<FlashCard> flashCards = new HashSet<>();
+    private Collection<FlashCard> flashCards = new HashSet<>();
 }

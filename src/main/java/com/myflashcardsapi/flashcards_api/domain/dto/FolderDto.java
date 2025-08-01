@@ -20,11 +20,11 @@ public class FolderDto {
 
     private String name;
 
-    private User user;
+    private Long userId;
 
-    private Folder parentFolder;
+    private Long parentFolderId;
 
-    private List<Folder> childFolders;
+    private List<Long> childFoldersIds;
 
-    private List<Deck> decks;
+    private List<Long> deckIds;
 }

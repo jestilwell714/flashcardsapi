@@ -23,7 +23,7 @@ public class UserDto {
 
     private String password;
 
-    private List<Deck> decks;
+    private List<Long> deckIds;
 
-    private Set<Tag> tags;
+    private Set<Long> tagIds;
 }

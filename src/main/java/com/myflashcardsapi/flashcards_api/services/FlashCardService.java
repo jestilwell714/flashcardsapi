@@ -1,24 +1,26 @@
 package com.myflashcardsapi.flashcards_api.services;
 
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
+import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
+import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface FlashCardService {
-    FlashCard createFlashCard(Long userId, Long deckId, FlashCard flashCard);
+    FlashCardDto createFlashCard(Long userId, Long deckId, FlashCardDto flashCardDto) throws BadRequestException;
 
-    FlashCard updateFlashCard(Long userId, FlashCard flashCard);
+    FlashCardDto updateFlashCard(Long userId, Long flashCardId, FlashCardDto flashCardDto) throws BadRequestException;
 
     void deleteFlashCard(Long userId, Long flashCardId);
 
-    Optional<FlashCard> getFlashCardByIdAndUser(Long flashcardId, Long userId);
+    Optional<FlashCardDto> getFlashCardByIdAndUser(Long flashcardId, Long userId);
 
-    List<FlashCard> GetDeckByIdAndUser(Long deckId, Long userId);
+    List<FlashCardDto> getFlashCardsByDeckIdAndUser(Long deckId, Long userId);
 
-    List<FlashCard> getAllFlashCardsForUser(Long userId);
+    List<FlashCardDto> getAllFlashCardsForUser(Long userId);
 
-    List<FlashCard> getFlashCardsByTagsIdAndUser(List<Long> tagIds, Long userId);
+    List<FlashCardDto> getFlashCardsByTagsIdAndUser(List<Long> tagIds, Long userId) throws BadRequestException;
 
-    List<FlashCard> getFlashCardsInFolder(Long folderId, Long userId);
+    List<FlashCardDto> getFlashCardsInFolder(Long folderId, Long userId);
 }

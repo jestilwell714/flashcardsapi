@@ -8,7 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,5 +26,5 @@ public class TagDto {
 
     private User user;
 
-    private Set<FlashCard> flashCards = new HashSet<>();
+    private List<Long> flashCardIds;
 }

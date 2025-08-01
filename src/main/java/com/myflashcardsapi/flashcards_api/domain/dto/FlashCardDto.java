@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -22,9 +24,9 @@ public class FlashCardDto {
 
     private String answer;
 
-    private Set<Tag> tags = new HashSet<>();
+    private List<Long> tagIds;
 
-    private Deck deck;
+    private Long deckId;
 
     private int difficultyLevel;
 }

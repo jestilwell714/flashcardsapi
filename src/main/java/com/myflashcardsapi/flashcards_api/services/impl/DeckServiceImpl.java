@@ -127,6 +127,8 @@ public class DeckServiceImpl implements DeckService {
 
     @Override
     public List<DeckDto> getAllDeckDtosByFolderIdAndUser(Long folderId, Long userId) {
+        folderRepository.findByIdAndUserId(folderId, userId).get();
+
         List<Deck> deckList = deckRepository.findByFolderIdAndUserId(folderId,userId);
         List<DeckDto> deckDtoList = new ArrayList<>();
         for(Deck deck : deckList) {
