@@ -116,6 +116,7 @@ public class DeckServiceImpl implements DeckService {
 
     @Override
     public List<DeckDto> getAllDeckDtosForUser(Long userId) {
+        userRepository.findById(userId).get();
         List<Deck> deckList = deckRepository.findByUserId(userId);
         List<DeckDto> deckDtoList = new ArrayList<>();
         for(Deck deck : deckList) {

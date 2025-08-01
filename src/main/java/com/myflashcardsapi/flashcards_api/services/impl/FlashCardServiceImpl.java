@@ -2,6 +2,7 @@ package com.myflashcardsapi.flashcards_api.services.impl;
 
 import com.myflashcardsapi.flashcards_api.domain.Deck;
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
+import com.myflashcardsapi.flashcards_api.domain.Folder;
 import com.myflashcardsapi.flashcards_api.domain.Tag;
 import com.myflashcardsapi.flashcards_api.domain.dto.DeckDto;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
@@ -9,8 +10,10 @@ import com.myflashcardsapi.flashcards_api.mappers.impl.FlashCardMapperImpl;
 import com.myflashcardsapi.flashcards_api.repositories.DeckRepository;
 import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
+import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.DeckService;
 import com.myflashcardsapi.flashcards_api.services.FlashCardService;
+import com.myflashcardsapi.flashcards_api.services.FolderService;
 import com.myflashcardsapi.flashcards_api.services.TagService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
@@ -25,12 +28,19 @@ public class FlashCardServiceImpl implements FlashCardService {
     private DeckService deckService;
 
     private TagRepository tagRepository;
+
+    private UserRepository userRepository;
+
+    private FolderService folderService;
+
     private FlashCardMapperImpl flashCardMapper;
 
-    public FlashCardServiceImpl(FlashCardRepository flashCardRepository, DeckService deckService, TagRepository tagRepository, FlashCardMapperImpl flashCardMapper) {
+    public FlashCardServiceImpl(FlashCardRepository flashCardRepository, DeckService deckService, TagRepository tagRepository, UserRepository userRepository, FolderService folderService, FlashCardMapperImpl flashCardMapper) {
         this.flashCardRepository = flashCardRepository;
         this.deckService = deckService;
         this.tagRepository = tagRepository;
+        this.userRepository = userRepository;
+        this.folderService = folderService;
         this.flashCardMapper = flashCardMapper;
     }
 
@@ -106,6 +116,7 @@ public class FlashCardServiceImpl implements FlashCardService {
 
     @Override
     public List<FlashCardDto> getAllFlashCardsForUser(Long userId) {
+        userRepository.findById(userId).get();
         List<FlashCard> flashCards = flashCardRepository.findByDeckUserId(userId);
         List<FlashCardDto> flashCardDtoList = new ArrayList<>();
         for(FlashCard flashCard : flashCards) {
@@ -130,7 +141,16 @@ public class FlashCardServiceImpl implements FlashCardService {
 
     @Override
     public List<FlashCardDto> getFlashCardsInFolder(Long folderId, Long userId) {
-        return null;
+        List<Long> folderIds = folderService.findAllDescendantFolderIds(folderId, userId);
+        List<FlashCard> flashCards = new ArrayList<>();
+        for(Long id: folderIds) {
+            flashCardRepository.findByDeckFolderIdAndDeckUserId(id, userId);
+        }
+        List<FlashCardDto> flashCardDtoList = new ArrayList<>();
+        for(FlashCard flashCard : flashCards) {
+            flashCardDtoList.add(flashCardMapper.mapTo(flashCard));
+        }
+        return flashCardDtoList;
     }
 
 }

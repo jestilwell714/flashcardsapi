@@ -1,22 +1,27 @@
 package com.myflashcardsapi.flashcards_api.services;
 
-import com.myflashcardsapi.flashcards_api.domain.Folder;
+import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface FolderService {
-    Folder createFolder(Long userId, Long parentFolderId, Folder folder);
+    FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto);
 
-    Folder updateFolder(Long userId, Folder folder);
+    FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto);
 
-    void deleteFolder(Long userId, Folder folder);
+    void deleteFolder(Long userId, Long folderId);
 
-    Optional<Folder> getFolderByIdAndUser(Long userId, Long folderId);
+    Optional<FolderDto> getFolderByIdAndUser(Long userId, Long folderId);
 
-    List<Folder> getAllFoldersForUser(Long userid);
+    List<FolderDto> getAllFoldersForUser(Long userid);
 
-    List<Folder> getAllForParentFolderAndUser(Long folderId, Long userId);
+    List<FolderDto> getAllForParentFolderAndUser(Long folderId, Long userId);
 
-    List<Folder> getRootFoldersForUser(Long userId);
+    List<FolderDto> getRootFoldersForUser(Long userId);
+
+    List<Long> findAllDescendantFolderIds(Long folderId, Long userId);
+
+    void findChildrenFoldersRecursive(Long parentId, Long userId, Set<Long> ids);
 }
