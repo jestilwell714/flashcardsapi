@@ -19,4 +19,6 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     List<Folder> findByParentFolderIsNullAndUserId(Long userId);
     // Check if a folder with a specific name exists for a user
     boolean existsByNameIgnoreCaseAndParentFolderIdAndUserId(String name, Long parentFolderId, Long userId);
+
+    boolean existsByNameIgnoreCaseAndParentFolderIsNullAndUserId(String name, Long userId);
 }

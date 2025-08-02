@@ -1,13 +1,14 @@
 package com.myflashcardsapi.flashcards_api.services;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
+import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface FolderService {
-    FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto);
+    FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto) throws BadRequestException;
 
     FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto);
 

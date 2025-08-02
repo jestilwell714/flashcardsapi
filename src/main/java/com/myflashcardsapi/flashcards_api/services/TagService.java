@@ -1,19 +1,20 @@
 package com.myflashcardsapi.flashcards_api.services;
 
 import com.myflashcardsapi.flashcards_api.domain.Tag;
+import com.myflashcardsapi.flashcards_api.domain.dto.TagDto;
+import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TagService {
-    Tag createTag(Long userId, Long flashCardId, Tag tag);
+    TagDto createTag(Long userId, TagDto tagDto) throws BadRequestException;
 
-    Tag updateTag(Long userId, Tag tag);
+    TagDto updateTag(Long userId, Long tagId, TagDto tagDto) throws BadRequestException;
 
-    Tag deleteTag(Long userId, Tag tag);
+    void deleteTag(Long userId, Long tagId);
 
-    List<Tag> getAllTagsForUser(Long userId);
+    List<TagDto> getAllTagsForUser(Long userId);
 
-    Optional<Tag> getTagsByIdAndUser(Long tagId, Long userId);
-
+    Optional<TagDto> getTagByIdAndUser(Long tagId, Long userId);
 }

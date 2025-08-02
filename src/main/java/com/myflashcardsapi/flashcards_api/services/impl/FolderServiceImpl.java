@@ -1,11 +1,13 @@
 package com.myflashcardsapi.flashcards_api.services.impl;
 
 import com.myflashcardsapi.flashcards_api.domain.Folder;
+import com.myflashcardsapi.flashcards_api.domain.User;
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.FolderMapperImpl;
 import com.myflashcardsapi.flashcards_api.repositories.FolderRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.FolderService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,18 +28,47 @@ public class FolderServiceImpl implements FolderService {
 
 
     @Override
-    public FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto) {
-        return null;
+    public FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto) throws BadRequestException {
+        User user = userRepository.findById(userId).get();
+
+        Folder parentFolder = null;
+        if(folderDto.getParentFolderId() != null) {
+            parentFolder = folderRepository.findByIdAndUserId(folderDto.getParentFolderId(), userId).get();
+        }
+
+        boolean nameExists;
+        if (folderDto.getParentFolderId() == null) {
+            nameExists = folderRepository.existsByNameIgnoreCaseAndParentFolderIsNullAndUserId(folderDto.getName(), userId);
+        } else {
+            nameExists = folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(folderDto.getName(), folderDto.getParentFolderId(), userId);
+        }
+
+        if(nameExists) {
+            throw new BadRequestException("Folder with name " + folderDto.getName() + " already exists in this directory");
+        }
+
+        Folder folder = folderMapper.mapFrom(folderDto);
+        folder.setUser(user);
+        folder.setParentFolder(parentFolder);
+
+        Folder savedFolder = folderRepository.save(folder);
+        return  folderMapper.mapTo(folder);
     }
 
     @Override
     public FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto) {
-        return null;
+        Folder existingFolder = folderRepository.findByIdAndUserId(folderId, userId).get();
+
+        //Check if folder has been moved into another parent folder
+        //TO DO **********************************************
+        Folder updatedFolder = folderRepository.save(existingFolder);
+        return folderMapper.mapTo(updatedFolder);
     }
 
     @Override
     public void deleteFolder(Long userId, Long folderId) {
-
+        Folder folder = folderRepository.findByIdAndUserId(folderId, userId).get();
+        folderRepository.delete(folder);
     }
 
     @Override
