@@ -56,12 +56,47 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto) {
-        Folder existingFolder = folderRepository.findByIdAndUserId(folderId, userId).get();
+    public FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto) throws BadRequestException {
+        Folder folder = folderRepository.findByIdAndUserId(folderId, userId).get();
+        boolean parentHasChanged = false;
+        boolean nameChanged = !folder.getName().equalsIgnoreCase(folderDto.getName());
 
         //Check if folder has been moved into another parent folder
-        //TO DO **********************************************
-        Folder updatedFolder = folderRepository.save(existingFolder);
+        if(folder.getParentFolder() != null && folderDto.getParentFolderId() != null) {
+            if (!Optional.ofNullable(folderDto.getParentFolderId()).equals(folder.getParentFolder().getId())) {
+                // Prevent setting itself or its descendants as parent
+                List<Long> existingFolderDescendants = findAllDescendantFolderIds(folder.getId(), userId);
+                if (existingFolderDescendants.contains(folderDto.getParentFolderId())) {
+                    throw new BadRequestException("Cannot move a folder into itself or its own descendants.");
+                }
+
+                parentHasChanged = true;
+            }
+        } else if(folder.getParentFolder() == null && folderDto.getParentFolderId() != null) {
+            throw new BadRequestException("Cannot move a folder into itself or its own descendants.");
+        } else if(folderDto.getParentFolderId() == null && folderDto.getParentFolderId() != null) {
+
+            parentHasChanged = true;
+        }
+
+        // Check if name is unique in directory level
+        if(nameChanged || parentHasChanged) {
+            if(folderDto.getParentFolderId() == null) {
+                if(folderRepository.existsByNameIgnoreCaseAndParentFolderIsNullAndUserId(folderDto.getName(),userId)) {
+                    throw new BadRequestException("Folder with name " + folderDto.getName() + " is already in this directory");
+                }
+                folder.setParentFolder(null);
+            } else {
+                if(folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(folderDto.getName(), folderDto.getParentFolderId(), userId)) {
+                    throw new BadRequestException("Folder with name " + folderDto.getName() + " is already in this directory");
+                }
+                Folder parent = folderRepository.findByIdAndUserId(folderDto.getParentFolderId(), userId).get();
+                folder.setParentFolder(parent);
+            }
+            folder.setName(folderDto.getName());
+        }
+
+        Folder updatedFolder = folderRepository.save(folder);
         return folderMapper.mapTo(updatedFolder);
     }
 

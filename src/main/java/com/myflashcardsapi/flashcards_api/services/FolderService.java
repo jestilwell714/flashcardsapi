@@ -10,7 +10,7 @@ import java.util.Set;
 public interface FolderService {
     FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto) throws BadRequestException;
 
-    FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto);
+    FolderDto updateFolder(Long userId, Long folderId, FolderDto folderDto) throws BadRequestException;
 
     void deleteFolder(Long userId, Long folderId);
 
