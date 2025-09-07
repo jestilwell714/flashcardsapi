@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Component
 public class TestEntityBuilder {
 
     @Autowired
@@ -109,14 +111,14 @@ public class TestEntityBuilder {
         flashCard1 = FlashCard.builder()
                 .question("What is a stack?")
                 .answer("A linear data structure that follows the LIFO (Last-In, First-Out) principle. Operations include Push (add) and Pop (remove).")
-                .tags(Set.of(dataStructureTag))
+                .tags(List.of(dataStructureTag))
                 .deck(deck1)
                 .build();
 
         flashCard2 = FlashCard.builder()
                 .question("n which data structure is data organized into nodes, with each node having a value and pointers to other nodes?")
                 .answer("Linked List")
-                .tags(Set.of(dataStructureTag))
+                .tags(List.of(dataStructureTag))
                 .deck(deck1)
                 .build();
 
@@ -124,7 +126,7 @@ public class TestEntityBuilder {
         flashCard3 = FlashCard.builder()
                 .question("What is the primary goal of a sorting algorithm?")
                 .answer("To arrange elements of a list in a specific order")
-                .tags(Set.of(algorithmsTag))
+                .tags(List.of(algorithmsTag))
                 .deck(deck1)
                 .build();
 
@@ -132,7 +134,7 @@ public class TestEntityBuilder {
         flashCard4 = FlashCard.builder()
                 .question("Q: What is the common data structure often used to implement a Breadth-First Search (BFS) algorithm?")
                 .answer("A queue")
-                .tags(Set.of(dataStructureTag, algorithmsTag))
+                .tags(List.of(dataStructureTag, algorithmsTag))
                 .deck(deck2)
                 .build();
 
