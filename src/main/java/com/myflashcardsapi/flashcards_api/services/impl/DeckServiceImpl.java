@@ -39,10 +39,10 @@ public class DeckServiceImpl implements DeckService {
         Folder folder = null;
         if(deckDto.getFolderId() != null) {
             folder = folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get();
-            if(deckRepository.existsByNameIgnoreCaseUserIdAndFolderId(deckDto.getName(), userId, folder.getId())) {
+            if(deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, folder.getId())) {
                 throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists in this folder");
             }
-        } else if(deckRepository.existsByNameIgnoreCaseUserIdAndFolderId(deckDto.getName(), userId, null)) {
+        } else if(deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, null)) {
             throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists");
         }
 
@@ -60,7 +60,7 @@ public class DeckServiceImpl implements DeckService {
 
         // Change name if changed
         if(!deck.getName().equalsIgnoreCase(deckDto.getName())) {
-            if (deckRepository.existsByNameIgnoreCaseUserIdAndFolderId(deckDto.getName(), userId, deckDto.getFolderId())) {
+            if (deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, deckDto.getFolderId())) {
                 throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists in this folder");
             }
             deck.setName(deckDto.getName());

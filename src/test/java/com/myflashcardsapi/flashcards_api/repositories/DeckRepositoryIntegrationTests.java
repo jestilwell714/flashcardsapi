@@ -56,7 +56,7 @@ public class DeckRepositoryIntegrationTests {
 
     @Test
     void existsByNameIgnoreCaseAndUserIdShouldReturnTrue() {
-        boolean exists = underTest.existsByNameIgnoreCaseAndUserId(testEntityBuilder.getDeck2().getName(), testEntityBuilder.getUser().getId());
+        boolean exists = underTest.existsByNameIgnoreCaseAndUserIdAndFolderId(testEntityBuilder.getDeck2().getName(), testEntityBuilder.getUser().getId(),testEntityBuilder.getCosc201Folder().getId());
         assertThat(exists).isTrue();
     }
 }
