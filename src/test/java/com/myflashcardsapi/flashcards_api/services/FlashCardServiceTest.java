@@ -9,10 +9,7 @@ import com.myflashcardsapi.flashcards_api.mappers.impl.FlashCardMapperImpl;
 import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
-import com.myflashcardsapi.flashcards_api.util.TestEntityBuilder;
 import com.myflashcardsapi.flashcards_api.util.TestEntityBuilderUnit;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,18 +17,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FlashCardServiceTest {
@@ -128,4 +120,32 @@ public class FlashCardServiceTest {
         assertThat(updatedFlashCardDto.getAnswer()).isEqualTo(flashCardDto.getAnswer());
         assertThat(updatedFlashCardDto.getTagIds()).containsExactlyInAnyOrder(tag2.getId());
     }
+
+    @Test
+    void givenFlashCardIdAndUserIdDeleteFlashCard() {
+        when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard.getId(), deck.getUser().getId())).thenReturn(Optional.ofNullable(flashCard));
+        flashcardService.deleteFlashCard(user.getId(), flashCard.getId());
+        verify(mockFlashcardRepository).delete(flashCard);
+    }
+
+    @Test
+    void givenFlashCardIdAndUserIdReturnFlashCard() {
+        when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard.getId(), deck.getId())).thenReturn(Optional.ofNullable(flashCard));
+        when(mockFlashcardMapper.mapTo(flashCard)).thenReturn(flashCardDto);
+        FlashCardDto returnedFlashCardDto = flashcardService.getFlashCardByIdAndUser(flashCard.getId(), deck.getUser().getId()).get();
+        verify(mockFlashcardRepository).findByIdAndDeckUserId(flashCard.getId(),deck.getUser().getId());
+        assertThat(returnedFlashCardDto).isNotNull();
+        assertThat(returnedFlashCardDto.getQuestion()).isEqualTo(flashCardDto.getQuestion());
+        assertThat(returnedFlashCardDto.getAnswer()).isEqualTo(flashCardDto.getAnswer());
+        assertThat(returnedFlashCardDto.getDeckId()).isEqualTo(flashCardDto.getDeckId());
+        assertThat(returnedFlashCardDto.getTagIds()).containsExactlyInAnyOrder(tag.getId());
+    }
+
+//    @Test
+//    void givenDeckIdAndUserIdReturnAllFlashCardsFromDeck() {
+//        when(mockDeckService.getDeckByIdAndUser(deck.getId(),deck.getUser().getId())).thenReturn(Optional.ofNullable(deck));
+//
+//    }
+
+
 }
