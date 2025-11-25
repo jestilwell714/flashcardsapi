@@ -19,9 +19,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -100,7 +102,13 @@ public class FlashCardServiceTest {
     }
 
     @Test
-    void givenDtoWhenUpdateFlashcardThenRetuenUpdateDto() throws BadRequestException {
+    void givenInvalidDeckIdWhenCreateFlashcardThenThrowsException() {
+        when(mockDeckService.getDeckByIdAndUser(deck.getId(),user.getId())).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> flashcardService.createFlashCard(user.getId(), deck.getId(), flashCardDto));
+    }
+
+    @Test
+    void givenDtoWhenUpdateFlashcardThenReturnUpdateDto() throws BadRequestException {
         flashCardDto.setQuestion("What is the primary goal of a sorting algorithm?");
         flashCardDto.setAnswer("To arrange elements of a list in a specific order");
         flashCardDto.setDeckId(deck2.getId());
@@ -148,4 +156,7 @@ public class FlashCardServiceTest {
 //    }
 
 
+
+    @Test
+    void
 }
