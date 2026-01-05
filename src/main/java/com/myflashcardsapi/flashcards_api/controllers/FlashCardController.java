@@ -70,7 +70,7 @@ public class FlashCardController {
 
     // --- DELETE ---
     @DeleteMapping("/flashcards/{flashCardId}")
-    public ResponseEntity<FlashCardDto> deleteFlashCard(@RequestHeader("X-User-ID") Long userId,
+    public ResponseEntity<Void> deleteFlashCard(@RequestHeader("X-User-ID") Long userId,
                                                         @PathVariable Long flashCardId) {
         flashCardService.deleteFlashCard(userId,flashCardId);
         return new ResponseEntity<>(HttpStatus.OK);

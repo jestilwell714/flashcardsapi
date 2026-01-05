@@ -20,14 +20,14 @@ public class DeckController {
         this.deckService = deckService;
     }
 
-    // --- POST ---
+    // --- CREATE ---
     @PostMapping("/decks/{deckId}")
     public ResponseEntity<DeckDto> createDeck(@RequestBody DeckDto deckDto, @RequestHeader("X-User-ID") Long userId) throws BadRequestException {
         DeckDto deck = deckService.createDeck(userId,deckDto);
         return new ResponseEntity<>(deck, HttpStatus.CREATED);
     }
 
-    // --- GET ---
+    // --- READ ---
     @GetMapping("/decks/{deckId}")
     public ResponseEntity<DeckDto> getDeckById(@RequestHeader("X-User-ID") Long userId, @PathVariable Long deckId) {
         try {
@@ -46,5 +46,18 @@ public class DeckController {
     @GetMapping("/folders/{folderId}/decks")
     public List<DeckDto> getAllDecksForFolderId(@RequestHeader("X-User-ID") Long userId, @PathVariable Long folderId) {
         return deckService.getAllDeckDtosByFolderIdAndUser(folderId,userId);
+    }
+
+    //--- UPDATE ---
+    @PutMapping("/decks/{deckId}")
+    public ResponseEntity<DeckDto> updateDeckById(@RequestBody DeckDto deckDto, @PathVariable Long deckId, @RequestHeader("X-User-ID") Long userId) throws BadRequestException {
+        DeckDto deck = deckService.updateDeck(userId,deckId,deckDto);
+        return new ResponseEntity<>(deck,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deck/{deckId}")
+    public ResponseEntity<Void> deleteDeckById(@PathVariable Long deckId, @RequestHeader("X-User-ID") Long userId) {
+        deckService.deleteDeck(userId,deckId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
