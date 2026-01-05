@@ -46,4 +46,18 @@ public class FolderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // --- UPDATE ---
+    @PutMapping("/folders/{folderId}")
+    public ResponseEntity<FolderDto> updateFolder(@PathVariable Long folderId, @RequestHeader("X-User-ID") Long userId, @RequestHeader FolderDto folderDto) throws BadRequestException {
+        FolderDto folder = folderService.updateFolder(userId,folderId,folderDto);
+        return new ResponseEntity<>(folder,HttpStatus.OK);
+    }
+
+    // --- DELETE ---
+    @DeleteMapping("/folders/{folderId}")
+    public ResponseEntity<Void> deleteFolder(@PathVariable Long folderId, @RequestHeader("X-User-ID") Long userId) {
+        folderService.deleteFolder(userId,folderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
