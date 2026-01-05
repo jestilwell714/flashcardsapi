@@ -130,6 +130,17 @@ public class FlashCardServiceTest {
     }
 
     @Test
+    void givenNonExistingFlashcardIdWhenUpdateFlashCardThenThrowsException() {
+        FlashCardDto nonExistingFlashcardDto = FlashCardDto.builder()
+                .id(999L)
+                .question("Non-existent")
+                .answer("Non-existent")
+                .build();
+        when(mockFlashcardRepository.findByIdAndDeckUserId(999L, deck.getUser().getId())).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> flashcardService.updateFlashCard(user.getId(), 999L,nonExistingFlashcardDto));
+    }
+
+    @Test
     void givenFlashCardIdAndUserIdDeleteFlashCard() {
         when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard.getId(), deck.getUser().getId())).thenReturn(Optional.ofNullable(flashCard));
         flashcardService.deleteFlashCard(user.getId(), flashCard.getId());
@@ -148,15 +159,8 @@ public class FlashCardServiceTest {
         assertThat(returnedFlashCardDto.getDeckId()).isEqualTo(flashCardDto.getDeckId());
         assertThat(returnedFlashCardDto.getTagIds()).containsExactlyInAnyOrder(tag.getId());
     }
-
-//    @Test
-//    void givenDeckIdAndUserIdReturnAllFlashCardsFromDeck() {
-//        when(mockDeckService.getDeckByIdAndUser(deck.getId(),deck.getUser().getId())).thenReturn(Optional.ofNullable(deck));
-//
-//    }
+    
 
 
 
-    @Test
-    void
 }
