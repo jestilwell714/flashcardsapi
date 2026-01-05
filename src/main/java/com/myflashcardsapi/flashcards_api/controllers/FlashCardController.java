@@ -62,14 +62,14 @@ public class FlashCardController {
     }
 
     // --- UPDATE ---
-    @GetMapping("/flashcards/{flashCardId")
+    @PutMapping("/flashcards/{flashCardId}")
     public ResponseEntity<FlashCardDto> updateFlashCard(@RequestBody FlashCardDto flashCardDto, @RequestHeader("X-User-ID") Long userId, @PathVariable Long flashCardId) throws BadRequestException {
         FlashCardDto flashcard = flashCardService.updateFlashCard(userId,flashCardId,flashCardDto);
         return new ResponseEntity<>(flashcard,HttpStatus.OK);
     }
 
     // --- DELETE ---
-    @GetMapping("/flashcards/{flashCardId")
+    @DeleteMapping("/flashcards/{flashCardId}")
     public ResponseEntity<FlashCardDto> deleteFlashCard(@RequestHeader("X-User-ID") Long userId,
                                                         @PathVariable Long flashCardId) {
         flashCardService.deleteFlashCard(userId,flashCardId);
