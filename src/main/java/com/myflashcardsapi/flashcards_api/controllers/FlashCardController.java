@@ -4,6 +4,7 @@ import com.myflashcardsapi.flashcards_api.domain.FlashCard;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
 import org.apache.coyote.BadRequestException;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +59,20 @@ public class FlashCardController {
     @GetMapping("/folders/{folderId}/flashcards")
     public List<FlashCardDto> getFlashCardsByFolderId(@RequestHeader("X-User-ID") Long userId, @PathVariable Long folderId) {
         return  flashCardService.getFlashCardsInFolder(folderId, userId);
+    }
+
+    // --- UPDATE ---
+    @GetMapping("/flashcards/{flashCardId")
+    public ResponseEntity<FlashCardDto> updateFlashCard(@RequestBody FlashCardDto flashCardDto, @RequestHeader("X-User-ID") Long userId, @PathVariable Long flashCardId) throws BadRequestException {
+        FlashCardDto flashcard = flashCardService.updateFlashCard(userId,flashCardId,flashCardDto);
+        return new ResponseEntity<>(flashcard,HttpStatus.OK);
+    }
+
+    // --- DELETE ---
+    @GetMapping("/flashcards/{flashCardId")
+    public ResponseEntity<FlashCardDto> deleteFlashCard(@RequestHeader("X-User-ID") Long userId,
+                                                        @PathVariable Long flashCardId) {
+        flashCardService.deleteFlashCard(userId,flashCardId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
