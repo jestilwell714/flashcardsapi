@@ -24,7 +24,7 @@ public class DeckController {
     }
 
     // --- CREATE ---
-    @PostMapping("/decks/{deckId}")
+    @PostMapping("/decks")
     public ResponseEntity<DeckDto> createDeck(@RequestBody DeckDto deckDto, @RequestHeader("X-User-ID") Long userId) throws BadRequestException {
         DeckDto deck = deckService.createDeck(userId,deckDto);
         return new ResponseEntity<>(deck, HttpStatus.CREATED);
