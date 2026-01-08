@@ -1,6 +1,7 @@
 package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
+import com.myflashcardsapi.flashcards_api.services.FolderService;
 import com.myflashcardsapi.flashcards_api.services.impl.FolderServiceImpl;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,9 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api")
 public class FolderController {
-    private FolderServiceImpl folderService;
+    private FolderService folderService;
 
-    public FolderController(FolderServiceImpl folderService) {
+    public FolderController(FolderService folderService) {
         this.folderService = folderService;
     }
 

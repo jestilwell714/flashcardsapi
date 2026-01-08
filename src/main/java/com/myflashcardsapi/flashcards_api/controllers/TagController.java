@@ -1,6 +1,7 @@
 package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.TagDto;
+import com.myflashcardsapi.flashcards_api.services.TagService;
 import com.myflashcardsapi.flashcards_api.services.impl.TagServiceImpl;
 import org.apache.coyote.BadRequestException;
 import org.apache.coyote.Response;
@@ -14,9 +15,9 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api")
 public class TagController {
-    private TagServiceImpl tagService;
+    private TagService tagService;
 
-    public TagController(TagServiceImpl tagService) {
+    public TagController(TagService tagService) {
         this.tagService = tagService;
     }
 

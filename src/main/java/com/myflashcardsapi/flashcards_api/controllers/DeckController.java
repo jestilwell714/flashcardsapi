@@ -2,6 +2,7 @@ package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.DeckDto;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
+import com.myflashcardsapi.flashcards_api.services.DeckService;
 import com.myflashcardsapi.flashcards_api.services.impl.DeckServiceImpl;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
 import org.apache.coyote.BadRequestException;
@@ -16,9 +17,9 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api")
 public class DeckController {
-    private DeckServiceImpl deckService;
+    private DeckService deckService;
 
-    public DeckController(DeckServiceImpl deckService) {
+    public DeckController(DeckService deckService) {
 
         this.deckService = deckService;
     }

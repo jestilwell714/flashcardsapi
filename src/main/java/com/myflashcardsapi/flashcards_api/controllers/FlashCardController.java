@@ -2,6 +2,7 @@ package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
+import com.myflashcardsapi.flashcards_api.services.FlashCardService;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
 import org.apache.coyote.BadRequestException;
 import org.apache.coyote.Response;
@@ -16,9 +17,9 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api")
 public class FlashCardController {
-    private FlashCardServiceImpl flashCardService;
+    private FlashCardService flashCardService;
 
-    public FlashCardController(FlashCardServiceImpl flashCardService) {
+    public FlashCardController(FlashCardService flashCardService) {
 
         this.flashCardService = flashCardService;
     }
