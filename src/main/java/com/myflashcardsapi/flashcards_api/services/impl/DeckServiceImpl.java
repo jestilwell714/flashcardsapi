@@ -66,33 +66,21 @@ public class DeckServiceImpl implements DeckService {
             }
 
         }
-        /**
-        // Change folder if moved folder
-        if(!(deckDto.getFolderId() == null && deck.getFolder() == null)) {
-            if (deckDto.getFolderId() == null && deck.getFolder() != null) {
+        if (!Objects.equals(deckDto.getFolderId(), deck.getFolder().getId())) {
+            if (deckDto.getFolderId() == null) {
+                // Moving to root
+                if (deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, null)) {
+                    throw new BadRequestException("Deck with this name already exists at root");
+                }
                 deck.setFolder(null);
-            } else if (deckDto.getFolderId() != null && deck.getFolder() == null || folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getName().equals(deck.getFolder().getName())) {
-                if (folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), userId, folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getId())) {
-                    throw new BadRequestException("Folder with the name " + folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getName() + " already exists in this folder");
+            } else {
+                // Moving to folder
+                if (deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, deckDto.getFolderId())) {
+                    throw new BadRequestException("Deck with this name already exists in this folder");
                 }
-                deck.setFolder(folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get());
-
+                Folder newFolder = folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get();
+                deck.setFolder(newFolder);
             }
-        }
-         */
-        // Change folder if moved folder
-        if(deck.getFolder() != null) {
-            if(!Optional.ofNullable(deckDto.getFolderId()).equals(deck.getFolder().getId())) {
-                if (folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), userId, folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getId())) {
-                    throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in folder " + folderRepository.findByIdAndUserId(deckDto.getFolderId(),userId).get().getName());
-                }
-                deck.setFolder(folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get());
-            }
-        } else if(deckDto.getFolderId() != null) {
-            if (folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), userId, folderRepository.findByIdAndUserId(null, userId).get().getId())) {
-                throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in folder " + folderRepository.findByIdAndUserId(deckDto.getFolderId(),userId).get().getName());
-            }
-            deck.setFolder(null);
         }
         deck.setName(deckDto.getName());
         Deck updatedDeck = deckRepository.save(deck);
