@@ -84,13 +84,13 @@ public class DeckServiceImpl implements DeckService {
         if(deck.getFolder() != null) {
             if(!Optional.ofNullable(deckDto.getFolderId()).equals(deck.getFolder().getId())) {
                 if (folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), userId, folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getId())) {
-                    throw new BadRequestException("Folder with the name " + folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getName() + " already exists in this folder");
+                    throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in folder " + folderRepository.findByIdAndUserId(deckDto.getFolderId(),userId).get().getName());
                 }
                 deck.setFolder(folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get());
             }
         } else if(deckDto.getFolderId() != null) {
             if (folderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), userId, folderRepository.findByIdAndUserId(null, userId).get().getId())) {
-                throw new BadRequestException("Folder with the name " + folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get().getName() + " already exists in this folder");
+                throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in folder " + folderRepository.findByIdAndUserId(deckDto.getFolderId(),userId).get().getName());
             }
             deck.setFolder(null);
         }
