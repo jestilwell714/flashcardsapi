@@ -63,7 +63,6 @@ public class DeckServiceTest {
         flashCard = testEntityBuilder.getFlashCard1();
 
         deck = testEntityBuilder.getDeck1();
-
         tag = testEntityBuilder.getDataStructureTag();
 
         deckDto = new DeckDto();
@@ -97,6 +96,34 @@ public class DeckServiceTest {
         assertThrows(BadRequestException.class,() -> deckService.createDeck(user.getId(), deckDto));
     }
 
+    @Test
+    void givenDtoWhenMovedFolderThenReturnUpdateDto() throws BadRequestException {
+        deckDto.setName("Lecture 2");
+        deckDto.setFolderId(folder2.getId());
+        when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
+        when(mockFolderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), deckDto.getFolderId(),user.getId())).thenReturn(false);
+        when(mockFolderRepository.findByIdAndUserId(deckDto.getFolderId(),user.getId())).thenReturn(Optional.of(folder2));
+        when(mockDeckRepository.save(deck)).thenReturn(deck);
+        when(mockDeckMapper.mapTo(deck)).thenReturn(deckDto);
 
+        DeckDto updatedDeckDto = deckService.updateDeck(user.getId(),deck.getId(),deckDto);
+        assertThat(updatedDeckDto).isNotNull();
+        assertThat(updatedDeckDto.getName()).isEqualTo(deckDto.getName());
+        assertThat(updatedDeckDto.getFolderId()).isEqualTo(deckDto.getFolderId());
+        verify(mockDeckRepository).save(deck);
+    }
+
+    @Test
+    void givenDtoWhenMovedFolderWithDeckWIthNameThenThrowException() throws BadRequestException {
+        deckDto.setFolderId(folder2.getId());
+        when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
+        when(mockFolderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(deckDto.getName(), deckDto.getFolderId(),user.getId())).thenReturn(false);
+        when(mockFolderRepository.findByIdAndUserId(deckDto.getFolderId(),user.getId())).thenReturn(Optional.of(folder2));
+        when(mockDeckRepository.save(deck)).thenReturn(deck);
+        when(mockDeckMapper.mapTo(deck)).thenReturn(deckDto);
+
+        DeckDto updatedDeckDto = deckService.updateDeck(user.getId(),deck.getId(),deckDto);
+        assertThrows(BadRequestException.class,() -> deckService.createDeck(user.getId(), deckDto));
+    }
 
 }
