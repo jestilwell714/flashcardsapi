@@ -18,6 +18,9 @@ public class TestEntityBuilderUnit {
     private Deck deck2;
     private Deck deck3;
     private FlashCard flashCard1;
+    private FlashCard flashCard2;
+    private FlashCard flashCard3;
+    private FlashCard flashCard4;
     private Tag dataStructureTag;
     private Tag algorithmsTag;
     private Folder cosc201Folder;
@@ -89,6 +92,33 @@ public class TestEntityBuilderUnit {
                 .answer("A linear data structure that follows the LIFO (Last-In, First-Out) principle. Operations include Push (add) and Pop (remove).")
                 .tags(List.of(dataStructureTag))
                 .deck(deck1)
+                .build();
+
+
+        flashCard2 = FlashCard.builder()
+                .id(2L)
+                .question("n which data structure is data organized into nodes, with each node having a value and pointers to other nodes?")
+                .answer("Linked List")
+                .tags(List.of(dataStructureTag))
+                .deck(deck1)
+                .build();
+
+
+        flashCard3 = FlashCard.builder()
+                .id(3L)
+                .question("What is the primary goal of a sorting algorithm?")
+                .answer("To arrange elements of a list in a specific order")
+                .tags(List.of(algorithmsTag))
+                .deck(deck1)
+                .build();
+
+
+        flashCard4 = FlashCard.builder()
+                .id(4L)
+                .question("Q: What is the common data structure often used to implement a Breadth-First Search (BFS) algorithm?")
+                .answer("A queue")
+                .tags(List.of(dataStructureTag, algorithmsTag))
+                .deck(deck2)
                 .build();
     }
 }
