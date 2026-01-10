@@ -43,7 +43,7 @@ public class TestEntityBuilderUnit {
                 .build();
 
         cosc204Folder = Folder.builder()
-                .id(2L)
+                .id(3L)
                 .name("COSC204")
                 .parentFolder(rootFolder)
                 .user(user)
