@@ -16,10 +16,12 @@ public class TestEntityBuilderUnit {
     private User user;
     private Deck deck1;
     private Deck deck2;
+    private Deck deck3;
     private FlashCard flashCard1;
     private Tag dataStructureTag;
     private Tag algorithmsTag;
     private Folder cosc201Folder;
+    private Folder cosc204Folder;
     private Folder rootFolder;
     public void testEntitySetUp() {
         this.user = User.builder()
@@ -40,6 +42,13 @@ public class TestEntityBuilderUnit {
                 .user(user)
                 .build();
 
+        cosc204Folder = Folder.builder()
+                .id(2L)
+                .name("COSC204")
+                .parentFolder(rootFolder)
+                .user(user)
+                .build();
+
         this.dataStructureTag = Tag.builder()
                 .id(1L)
                 .name("Data Structures")
@@ -55,13 +64,22 @@ public class TestEntityBuilderUnit {
 
         this.deck1 = Deck.builder()
                 .id(1L)
+                .name("Lecture 1")
                 .folder(cosc201Folder)
                 .user(user)
                 .build();
 
         this.deck2 = Deck.builder()
                 .id(2L)
+                .name("Lecture 2")
                 .folder(cosc201Folder)
+                .user(user)
+                .build();
+
+        this.deck3 = Deck.builder()
+                .id(3L)
+                .name("Lecture 1")
+                .folder(cosc204Folder)
                 .user(user)
                 .build();
 
