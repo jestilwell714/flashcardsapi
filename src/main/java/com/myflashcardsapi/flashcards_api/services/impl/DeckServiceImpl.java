@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,10 +41,10 @@ public class DeckServiceImpl implements DeckService {
         if(deckDto.getFolderId() != null) {
             folder = folderRepository.findByIdAndUserId(deckDto.getFolderId(), userId).get();
             if(deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, folder.getId())) {
-                throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists in this folder");
+                throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in this folder");
             }
         } else if(deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, null)) {
-            throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists");
+            throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists");
         }
 
         Deck newDeck = deckMapper.mapFrom(deckDto);
@@ -59,11 +60,11 @@ public class DeckServiceImpl implements DeckService {
         Deck deck = deckRepository.findByIdAndUserId(deckId, userId).get();
 
         // Change name if changed
-        if(!deck.getName().equalsIgnoreCase(deckDto.getName())) {
+        if(!deck.getName().equalsIgnoreCase(deckDto.getName()) && (Objects.equals(deck.getFolder().getId(), deckDto.getFolderId()))) {
             if (deckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), userId, deckDto.getFolderId())) {
-                throw new BadRequestException("Deck with the neame " + deckDto.getName() + " already exists in this folder");
+                throw new BadRequestException("Deck with the name " + deckDto.getName() + " already exists in this folder");
             }
-            deck.setName(deckDto.getName());
+
         }
         /**
         // Change folder if moved folder
@@ -93,6 +94,7 @@ public class DeckServiceImpl implements DeckService {
             }
             deck.setFolder(null);
         }
+        deck.setName(deckDto.getName());
         Deck updatedDeck = deckRepository.save(deck);
         return deckMapper.mapTo(updatedDeck);
     }
