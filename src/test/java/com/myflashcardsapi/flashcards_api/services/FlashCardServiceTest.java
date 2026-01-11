@@ -108,7 +108,7 @@ public class FlashCardServiceTest {
     }
 
     @Test
-    void givenDtoWhenUpdateFlashcardThenReturnUpdateDto() throws BadRequestException {
+    void givenNewDetailsWhenUpdateFlashcardThenFlashcardIsModified() throws BadRequestException {
         flashCardDto.setQuestion("What is the primary goal of a sorting algorithm?");
         flashCardDto.setAnswer("To arrange elements of a list in a specific order");
         flashCardDto.setDeckId(deck2.getId());
@@ -124,9 +124,9 @@ public class FlashCardServiceTest {
         FlashCardDto updatedFlashCardDto = flashcardService.updateFlashCard(user.getId(),flashCard.getId(),flashCardDto);
 
         assertThat(updatedFlashCardDto).isNotNull();
-        assertThat(updatedFlashCardDto.getQuestion()).isEqualTo(flashCardDto.getQuestion());
-        assertThat(updatedFlashCardDto.getAnswer()).isEqualTo(flashCardDto.getAnswer());
-        assertThat(updatedFlashCardDto.getTagIds()).containsExactlyInAnyOrder(tag2.getId());
+        assertThat(flashCard.getQuestion()).isEqualTo(flashCardDto.getQuestion());
+        assertThat(flashCard.getAnswer()).isEqualTo(flashCardDto.getAnswer());
+        assertThat(flashCard.getTags()).containsExactlyInAnyOrder(tag2);
     }
 
     @Test

@@ -113,7 +113,7 @@ public class DeckServiceTest {
     }
 
     @Test
-    void givenDtoWhenMovedFolderThenReturnUpdateDto() throws BadRequestException {
+    void givenDtoWhenMovedFolderThenDeckIsModified() throws BadRequestException {
         deckDto.setName("Lecture 2");
         deckDto.setFolderId(folder2.getId());
         when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
@@ -124,13 +124,13 @@ public class DeckServiceTest {
 
         DeckDto updatedDeckDto = deckService.updateDeck(user.getId(), deck.getId(), deckDto);
         assertThat(updatedDeckDto).isNotNull();
-        assertThat(updatedDeckDto.getName()).isEqualTo(deckDto.getName());
-        assertThat(updatedDeckDto.getFolderId()).isEqualTo(deckDto.getFolderId());
+        assertThat(deck.getName()).isEqualTo(deckDto.getName());
+        assertThat(deck.getFolder().getId()).isEqualTo(deckDto.getFolderId());
         verify(mockDeckRepository).save(deck);
     }
 
     @Test
-    void givenDtoWhenUpdatedNameThenReturnUpdateDto() throws BadRequestException {
+    void givenDtoWhenUpdatedNameThenDeckIsModified() throws BadRequestException {
         deckDto.setName("Lecture 2");
         when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
         when(mockDeckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), user.getId(), deckDto.getFolderId())).thenReturn(false);
@@ -139,13 +139,13 @@ public class DeckServiceTest {
 
         DeckDto updatedDeckDto = deckService.updateDeck(user.getId(), deck.getId(), deckDto);
         assertThat(updatedDeckDto).isNotNull();
-        assertThat(updatedDeckDto.getName()).isEqualTo(deckDto.getName());
-        assertThat(updatedDeckDto.getFolderId()).isEqualTo(deckDto.getFolderId());
+        assertThat(deck.getName()).isEqualTo(deckDto.getName());
+        assertThat(deck.getFolder().getId()).isEqualTo(deckDto.getFolderId());
         verify(mockDeckRepository).save(deck);
     }
 
     @Test
-    void givenDtoWhenMovedToNoParentFolderThenReturnUpdateDto() throws BadRequestException {
+    void givenDtoWhenMovedToNoParentFolderThenDeckIsModified() throws BadRequestException {
         deckDto.setFolderId(null);
         when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
         when(mockDeckRepository.existsByNameIgnoreCaseAndUserIdAndFolderId(deckDto.getName(), user.getId(), deckDto.getFolderId())).thenReturn(false);
@@ -154,8 +154,8 @@ public class DeckServiceTest {
 
         DeckDto updatedDeckDto = deckService.updateDeck(user.getId(), deck.getId(), deckDto);
         assertThat(updatedDeckDto).isNotNull();
-        assertThat(updatedDeckDto.getName()).isEqualTo(deckDto.getName());
-        assertThat(updatedDeckDto.getFolderId()).isEqualTo(deckDto.getFolderId());
+        assertThat(deck.getName()).isEqualTo(deckDto.getName());
+        assertThat(deck.getFolder()).isEqualTo(null);
         verify(mockDeckRepository).save(deck);
     }
 
