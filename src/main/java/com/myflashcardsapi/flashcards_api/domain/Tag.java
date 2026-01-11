@@ -26,6 +26,6 @@ public class Tag {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags")
     private Collection<FlashCard> flashCards = new HashSet<>();
 }
