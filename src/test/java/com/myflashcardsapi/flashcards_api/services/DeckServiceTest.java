@@ -170,6 +170,13 @@ public class DeckServiceTest {
     }
 
     @Test
+    void givenIdWhenDeleteDeckThenDeckNotExist() {
+        when(mockDeckRepository.findByIdAndUserId(deck.getId(), user.getId())).thenReturn(Optional.of(deck));
+        deckService.deleteDeck(user.getId(),deck.getId());
+        verify(mockDeckRepository).delete(deck);
+    }
+
+    @Test
     void givenUserIdWhenGetAllDeckDtosForUserReturnListOfDeck1Deck2AndDeck3() {
         when(mockUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(mockDeckRepository.findByUserId(user.getId())).thenReturn(List.of(deck, deck2, deck3));
