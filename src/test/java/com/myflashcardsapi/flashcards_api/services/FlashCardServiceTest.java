@@ -1,13 +1,12 @@
 package com.myflashcardsapi.flashcards_api.services;
 
-import com.myflashcardsapi.flashcards_api.domain.Deck;
-import com.myflashcardsapi.flashcards_api.domain.FlashCard;
-import com.myflashcardsapi.flashcards_api.domain.Tag;
-import com.myflashcardsapi.flashcards_api.domain.User;
+import com.myflashcardsapi.flashcards_api.domain.*;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.FlashCardMapperImpl;
 import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
+import com.myflashcardsapi.flashcards_api.repositories.FolderRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
+import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
 import com.myflashcardsapi.flashcards_api.util.TestEntityBuilderUnit;
 import org.apache.coyote.BadRequestException;
@@ -34,6 +33,9 @@ public class FlashCardServiceTest {
     private FlashCardRepository mockFlashcardRepository;
 
     @Mock
+    private UserRepository mockUserRepository;
+
+    @Mock
     private DeckService mockDeckService;
 
     @Mock
@@ -52,11 +54,18 @@ public class FlashCardServiceTest {
 
     private User user;
     private FlashCardDto flashCardDto;
+    private FlashCardDto flashCardDto2;
+    private FlashCardDto flashCardDto4;
     private FlashCard flashCard;
+    private FlashCard flashCard2;
+    private FlashCard flashCard4;
     private Deck deck;
     private Deck deck2;
     private Tag tag;
     private Tag tag2;
+    private Folder rootFolder;
+    private Folder cosc201Folder;
+    private Folder cosc204Folder;
 
     @BeforeEach
     void setUp() {
@@ -66,6 +75,8 @@ public class FlashCardServiceTest {
         user = testEntityBuilder.getUser();
 
         flashCard = testEntityBuilder.getFlashCard1();
+        flashCard2 = testEntityBuilder.getFlashCard2();
+        flashCard4 = testEntityBuilder.getFlashCard4();
 
         deck = testEntityBuilder.getDeck1();
 
@@ -75,6 +86,10 @@ public class FlashCardServiceTest {
 
         tag2 = testEntityBuilder.getAlgorithmsTag();
 
+        rootFolder = testEntityBuilder.getRootFolder();
+        cosc201Folder = testEntityBuilder.getCosc201Folder();
+        cosc204Folder = testEntityBuilder.getCosc204Folder();
+
 
         flashCardDto = new FlashCardDto();
         flashCardDto.setId(flashCard.getId());
@@ -82,6 +97,22 @@ public class FlashCardServiceTest {
         flashCardDto.setQuestion("What is a stack?");
         flashCardDto.setDeckId(deck.getId());
         flashCardDto.setTagIds(List.of(tag.getId()));
+
+
+        flashCardDto2 = new FlashCardDto();
+        flashCardDto2.setId(flashCard2.getId());
+        flashCardDto2.setAnswer(flashCard2.getAnswer());
+        flashCardDto2.setQuestion(flashCard2.getQuestion());
+        flashCardDto2.setDeckId(flashCard2.getDeck().getId());
+        flashCardDto2.setTagIds(List.of(tag2.getId()));
+
+        flashCardDto4 = new FlashCardDto();
+        flashCardDto4.setId(flashCard4.getId());
+        flashCardDto4.setAnswer(flashCard4.getAnswer());
+        flashCardDto4.setQuestion(flashCard4.getQuestion());
+        flashCardDto4.setDeckId(flashCard4.getDeck().getId());
+        flashCardDto4.setTagIds(List.of(tag2.getId(),tag.getId()));
+
     }
 
     @Test
@@ -159,8 +190,40 @@ public class FlashCardServiceTest {
         assertThat(returnedFlashCardDto.getDeckId()).isEqualTo(flashCardDto.getDeckId());
         assertThat(returnedFlashCardDto.getTagIds()).containsExactlyInAnyOrder(tag.getId());
     }
+
+    @Test
+    void givenUserIdReturnAllFlashCardsForUser() {
+        when(mockUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(mockFlashcardRepository.findByDeckUserId(user.getId())).thenReturn(List.of(flashCard,flashCard2));
+        when(mockFlashcardMapper.mapTo(flashCard)).thenReturn(flashCardDto);
+        when(mockFlashcardMapper.mapTo(flashCard2)).thenReturn(flashCardDto2);
+        List<FlashCardDto> flashCardDtoList = flashcardService.getAllFlashCardsForUser(user.getId());
+        assert(flashCardDtoList.containsAll(List.of(flashCardDto,flashCardDto2)));
+
+    }
+
+    @Test
+    void givenTagIdReturnAllFlashCardsForTag() throws BadRequestException {
+        when(mockTagRepository.findByIdInAndUserId(List.of(tag.getId(), tag2.getId()),user.getId())).thenReturn(List.of(tag,tag2));
+        when(mockFlashcardRepository.findByTagsIdInAndDeckUserId(List.of(tag.getId(), tag2.getId()),user.getId())).thenReturn(List.of(flashCard,flashCard2));
+        when(mockFlashcardMapper.mapTo(flashCard)).thenReturn(flashCardDto);
+        when(mockFlashcardMapper.mapTo(flashCard2)).thenReturn(flashCardDto2);
+        List<FlashCardDto> flashCardDtoList = flashcardService.getFlashCardsByTagsIdAndUser(List.of(tag.getId(), tag2.getId()),user.getId());
+        assert(flashCardDtoList.containsAll(List.of(flashCardDto,flashCardDto2)));
+    }
     
+    @Test
+    void givenFolderIdReturnAllFlashCardsForFolder() {
+        when(mockFolderService.findAllDescendantFolderIds(rootFolder.getId(),user.getId())).thenReturn(List.of(rootFolder.getId(),cosc201Folder.getId(),cosc204Folder.getId()));
+        when(mockFlashcardRepository.findByDeckFolderIdAndDeckUserId(rootFolder.getId(),user.getId())).thenReturn(List.of(flashCard4));
+        when(mockFlashcardRepository.findByDeckFolderIdAndDeckUserId(cosc201Folder.getId(),user.getId())).thenReturn(List.of(flashCard));
+        when(mockFlashcardRepository.findByDeckFolderIdAndDeckUserId(cosc204Folder.getId(),user.getId())).thenReturn(List.of(flashCard2));
+        when(mockFlashcardMapper.mapTo(flashCard)).thenReturn(flashCardDto);
+        when(mockFlashcardMapper.mapTo(flashCard2)).thenReturn(flashCardDto2);
+        when(mockFlashcardMapper.mapTo(flashCard4)).thenReturn(flashCardDto4);
+        List<FlashCardDto> flashCardDtoList = flashcardService.getFlashCardsInFolder(rootFolder.getId(),user.getId());
+        assert(flashCardDtoList.containsAll(List.of(flashCardDto,flashCardDto2,flashCardDto4)));
 
-
+    }
 
 }
