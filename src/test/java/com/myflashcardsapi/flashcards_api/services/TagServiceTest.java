@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -84,4 +85,27 @@ public class TagServiceTest {
 
         assertThrows(BadRequestException.class, () -> tagService.createTag(user.getId(), tagDto));
     }
+
+    @Test
+    void givenTagDtoWhenUpdateTagReturnTagDto() throws BadRequestException {
+        tagDto.setName("Operating systems");
+        when(mockTagRepository.findByIdAndUserId(tag.getId(), user.getId())).thenReturn(Optional.of(tag));
+        when(mockTagRepository.existsByNameIgnoreCaseAndUserId(tagDto.getName(), user.getId())).thenReturn(false);
+        when(mockTagRepository.save(tag)).thenReturn(tag);
+        when(mockTagMapper.mapTo(tag)).thenReturn(tagDto);
+        TagDto updatedTagDto = tagService.updateTag(user.getId(),tag.getId(),tagDto);
+
+        assertThat(updatedTagDto).isNotNull();
+        assert(tag.getName().equals("Operating systems"));
+        verify(mockTagRepository).save(tag);
+    }
+
+    @Test
+    void givenTagDtoWithSameNameWhenUpdateTagThrowException() throws BadRequestException {
+        tagDto.setName("Algorithm Tag");
+        when(mockTagRepository.findByIdAndUserId(tag.getId(), user.getId())).thenReturn(Optional.of(tag));
+        when(mockTagRepository.existsByNameIgnoreCaseAndUserId(tagDto.getName(), user.getId())).thenReturn(true);
+        assertThrows(BadRequestException.class, () -> tagService.updateTag(user.getId(),tag.getId(), tagDto));
+    }
+
 }
