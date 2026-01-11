@@ -17,4 +17,6 @@ public interface TagService {
     List<TagDto> getAllTagsForUser(Long userId);
 
     Optional<TagDto> getTagByIdAndUser(Long tagId, Long userId);
+
+    List<TagDto> getAllTagsForFlashCard(Long flashCardId, Long userId);
 }

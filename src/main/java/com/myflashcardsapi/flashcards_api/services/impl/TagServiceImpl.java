@@ -1,11 +1,13 @@
 package com.myflashcardsapi.flashcards_api.services.impl;
 
 import com.myflashcardsapi.flashcards_api.domain.Deck;
+import com.myflashcardsapi.flashcards_api.domain.FlashCard;
 import com.myflashcardsapi.flashcards_api.domain.Tag;
 import com.myflashcardsapi.flashcards_api.domain.User;
 import com.myflashcardsapi.flashcards_api.domain.dto.DeckDto;
 import com.myflashcardsapi.flashcards_api.domain.dto.TagDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.TagMapperImpl;
+import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.TagService;
@@ -22,6 +24,8 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     private UserRepository userRepository;
+
+    private FlashCardRepository flashCardRepository;
 
     private TagMapperImpl tagMapper;
 
@@ -78,5 +82,17 @@ public class TagServiceImpl implements TagService {
     @Override
     public Optional<TagDto> getTagByIdAndUser(Long tagId, Long userId) {
         return tagRepository.findByIdAndUserId(tagId, userId).map(tagMapper::mapTo);
+    }
+
+    @Override
+    public List<TagDto> getAllTagsForFlashCard(Long flashCardId, Long userId) {
+        userRepository.findById(userId).get();
+        FlashCard flashCard = flashCardRepository.findByIdAndDeckUserId(flashCardId,userId).get();
+        List<Tag> tagList = flashCard.getTags();
+        List<TagDto> tagDtoList = new ArrayList<>();
+        for(Tag tag : tagList) {
+            tagDtoList.add(tagMapper.mapTo(tag));
+        }
+        return tagDtoList;
     }
 }
