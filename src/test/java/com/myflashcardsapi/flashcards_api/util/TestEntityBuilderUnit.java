@@ -17,6 +17,7 @@ public class TestEntityBuilderUnit {
     private Deck deck1;
     private Deck deck2;
     private Deck deck3;
+    private Deck deck4;
     private FlashCard flashCard1;
     private FlashCard flashCard2;
     private FlashCard flashCard3;
@@ -86,6 +87,13 @@ public class TestEntityBuilderUnit {
                 .user(user)
                 .build();
 
+        this.deck4 = Deck.builder()
+                .id(4L)
+                .name("General")
+                .folder(null)
+                .user(user)
+                .build();
+
         this.flashCard1 = FlashCard.builder()
                 .id(1L)
                 .question("What is a stack?")
@@ -95,7 +103,7 @@ public class TestEntityBuilderUnit {
                 .build();
 
 
-        flashCard2 = FlashCard.builder()
+        this.flashCard2 = FlashCard.builder()
                 .id(2L)
                 .question("n which data structure is data organized into nodes, with each node having a value and pointers to other nodes?")
                 .answer("Linked List")
@@ -104,7 +112,7 @@ public class TestEntityBuilderUnit {
                 .build();
 
 
-        flashCard3 = FlashCard.builder()
+        this.flashCard3 = FlashCard.builder()
                 .id(3L)
                 .question("What is the primary goal of a sorting algorithm?")
                 .answer("To arrange elements of a list in a specific order")
@@ -113,12 +121,12 @@ public class TestEntityBuilderUnit {
                 .build();
 
 
-        flashCard4 = FlashCard.builder()
+        this.flashCard4 = FlashCard.builder()
                 .id(4L)
                 .question("Q: What is the common data structure often used to implement a Breadth-First Search (BFS) algorithm?")
                 .answer("A queue")
                 .tags(List.of(dataStructureTag, algorithmsTag))
-                .deck(deck2)
+                .deck(deck4)
                 .build();
     }
 }
