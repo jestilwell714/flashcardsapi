@@ -6,6 +6,7 @@ import com.myflashcardsapi.flashcards_api.domain.User;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.domain.dto.TagDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.TagMapperImpl;
+import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.impl.DeckServiceImpl;
@@ -31,6 +32,9 @@ import static org.mockito.Mockito.when;
 public class TagServiceTest {
     @Mock
     private UserRepository mockUserRepository;
+
+    @Mock
+    private FlashCardRepository mockFlashCardRepository;
 
     @Mock
     private TagRepository mockTagRepository;
@@ -134,4 +138,17 @@ public class TagServiceTest {
         assert(tagDtoList).containsAll(List.of(tagDto,tagDto2));
 
     }
+
+    @Test
+    void givenFlashCardIdWhenGetAllTagsForFlashCardReturnListOfTags() {
+        when(mockUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(mockFlashCardRepository.findByIdAndDeckUserId(flashcard4.getId(), user.getId())).thenReturn(Optional.of(flashcard4));
+        when(mockTagMapper.mapTo(tag)).thenReturn(tagDto);
+        when(mockTagMapper.mapTo(tag2)).thenReturn(tagDto2);
+        List<TagDto> tagDtoList = tagService.getAllTagsForFlashCard(flashcard4.getId(), user.getId());
+
+
+        assert(tagDtoList).containsAll(List.of(tagDto,tagDto2));
+    }
+
 }
