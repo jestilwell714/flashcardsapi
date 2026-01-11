@@ -144,7 +144,7 @@ public class FlashCardServiceImpl implements FlashCardService {
         List<Long> folderIds = folderService.findAllDescendantFolderIds(folderId, userId);
         List<FlashCard> flashCards = new ArrayList<>();
         for(Long id: folderIds) {
-            flashCardRepository.findByDeckFolderIdAndDeckUserId(id, userId);
+            flashCards.addAll(flashCardRepository.findByDeckFolderIdAndDeckUserId(id, userId));
         }
         List<FlashCardDto> flashCardDtoList = new ArrayList<>();
         for(FlashCard flashCard : flashCards) {
