@@ -54,7 +54,7 @@ public class TagServiceImpl implements TagService {
             existingTag.setName(tagDto.getName());
         }
 
-        Tag updatedTag = tagRepository.findByIdAndUserId(tagId, userId).get();
+        Tag updatedTag = tagRepository.save(existingTag);
         return tagMapper.mapTo(updatedTag);
     }
 
