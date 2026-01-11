@@ -108,5 +108,10 @@ public class TagServiceTest {
         assertThrows(BadRequestException.class, () -> tagService.updateTag(user.getId(),tag.getId(), tagDto));
     }
 
-
+    @Test
+    void givenTagIdAndUserIDWhenDeleteTagVerifyMethodCall() {
+        when(mockTagRepository.findByIdAndUserId(tag.getId(), user.getId())).thenReturn(Optional.of(tag));
+        tagService.deleteTag(user.getId(), tag.getId());
+        verify(mockTagRepository).delete(tag);
+    }
 }
