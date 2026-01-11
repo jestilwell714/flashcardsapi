@@ -40,9 +40,12 @@ public class TagServiceTest {
 
     private User user;
     private Tag tag;
+    private Tag tag2;
     private TagDto tagDto;
+    private TagDto tagDto2;
     private FlashCard flashcard1;
     private FlashCard flashcard2;
+    private FlashCard flashcard3;
     private FlashCard flashcard4;
 
     @InjectMocks
@@ -55,13 +58,18 @@ public class TagServiceTest {
         testEntityBuilder = new TestEntityBuilderUnit();
         testEntityBuilder.testEntitySetUp();
         tag = testEntityBuilder.getDataStructureTag();
+        tag2 = testEntityBuilder.getAlgorithmsTag();
         user = testEntityBuilder.getUser();
         flashcard1 = testEntityBuilder.getFlashCard1();
         flashcard2 = testEntityBuilder.getFlashCard2();
+        flashcard3 = testEntityBuilder.getFlashCard3();
         flashcard4 = testEntityBuilder.getFlashCard4();
 
         tagDto = new TagDto(tag.getId(),tag.getName(),tag.getUser().getId(),null);
         tagDto.setFlashCardIds(List.of(flashcard1.getId(),flashcard2.getId(), flashcard4.getId()));
+
+        tagDto2 = new TagDto(tag2.getId(),tag2.getName(),tag2.getUser().getId(),null);
+        tagDto2.setFlashCardIds(List.of(flashcard3.getId(),flashcard4.getId()));
     }
 
     @Test
@@ -113,5 +121,17 @@ public class TagServiceTest {
         when(mockTagRepository.findByIdAndUserId(tag.getId(), user.getId())).thenReturn(Optional.of(tag));
         tagService.deleteTag(user.getId(), tag.getId());
         verify(mockTagRepository).delete(tag);
+    }
+
+    @Test
+    void givenUserIdWhenGetAllTagsForUserIDReturnListOfTags() {
+        when(mockUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(mockTagRepository.findByUserId(user.getId())).thenReturn(List.of(tag,tag2));
+        when(mockTagMapper.mapTo(tag)).thenReturn(tagDto);
+        when(mockTagMapper.mapTo(tag2)).thenReturn(tagDto2);
+        List<TagDto> tagDtoList = tagService.getAllTagsForUser(user.getId());
+
+        assert(tagDtoList).containsAll(List.of(tagDto,tagDto2));
+
     }
 }
