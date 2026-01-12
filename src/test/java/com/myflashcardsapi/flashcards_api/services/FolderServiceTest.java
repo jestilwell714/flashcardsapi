@@ -144,6 +144,27 @@ public class FolderServiceTest {
         verify(mockFolderRepository).delete(folder);
     }
 
+    @Test
+    void givenUserIdWhenFindAllRootFoldersReturnListOfRootFolderDtos() {
+        when(mockUserRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(mockFolderRepository.findByParentFolderIsNullAndUserId(user.getId())).thenReturn(List.of(folder));
+        when(mockFolderMapper.mapTo(folder)).thenReturn(folderDto);
+
+        List<FolderDto> folderDtoList = folderService.getRootFoldersForUser(user.getId());
+        assert(folderDtoList.containsAll(List.of(folderDto)));
+    }
+
+    @Test
+    void givenFolderIdWhenFindAllDescendantFolderIdsReturnListOfFolderIds(){
+        when(mockFolderRepository.findByIdAndUserId(folder.getId(), user.getId())).thenReturn(Optional.of(folder));
+        when(mockFolderRepository.findByParentFolderIdAndUserId(folder.getId(), user.getId())).thenReturn(List.of(folder2,folder3));
+        when(mockFolderRepository.findByParentFolderIdAndUserId(folder2.getId(), user.getId())).thenReturn(List.of(folder4));
+        when(mockFolderRepository.findByParentFolderIdAndUserId(folder3.getId(), user.getId())).thenReturn(null);
+        when(mockFolderRepository.findByParentFolderIdAndUserId(folder4.getId(), user.getId())).thenReturn(null);
+        List<Long> folderIdList = folderService.findAllDescendantFolderIds(folder.getId(), user.getId());
+
+        assert(folderIdList.containsAll(List.of(folder.getId(),folder2.getId(),folder3.getId(),folder4.getId())));
+    }
 
 
 }
