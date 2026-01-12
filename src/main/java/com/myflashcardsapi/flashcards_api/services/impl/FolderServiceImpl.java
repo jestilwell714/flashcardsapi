@@ -157,9 +157,11 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public void findChildrenFoldersRecursive(Long parentId, Long userId, Set<Long> ids) {
         List<Folder> children = folderRepository.findByParentFolderIdAndUserId(parentId, userId);
-        for(Folder child: children) {
-            ids.add(child.getId());
-            findChildrenFoldersRecursive(child.getId(), userId, ids);
+        if(children != null) {
+            for (Folder child : children) {
+                ids.add(child.getId());
+                findChildrenFoldersRecursive(child.getId(), userId, ids);
+            }
         }
     }
 }
