@@ -25,6 +25,7 @@ public class TestEntityBuilderUnit {
     private Tag dataStructureTag;
     private Tag algorithmsTag;
     private Folder cosc201Folder;
+    private Folder cosc201MidTermFolder;
     private Folder cosc204Folder;
     private Folder rootFolder;
     public void testEntitySetUp() {
@@ -43,6 +44,13 @@ public class TestEntityBuilderUnit {
                 .id(2L)
                 .name("COSC201")
                 .parentFolder(rootFolder)
+                .user(user)
+                .build();
+
+        cosc201MidTermFolder = Folder.builder()
+                .id(4L)
+                .name("Midterm")
+                .parentFolder(cosc201Folder)
                 .user(user)
                 .build();
 
