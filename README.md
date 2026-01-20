@@ -1,18 +1,15 @@
-# Java REST API FlashCards Project
-
-## A working progress FlashCards app written with Java/Spring Boot backend. 
+# Java/Spring Boot REST API FlashCards Project
 
 ## Duel Study modes
 
-### Cram mode ("lazy update weight logic)
-For short-term exam preperation, endless cramming mode
-- Custom "lazy update strategy"
+### Cram mode ("lazy update weight logic")
+For short-term exam preperation, endless cramming mode.
 - **User Feedback:** after card has been flipped, user can score from 1-5 based if the got the card correct and how difficult it was for them to retain. This score is used to give the card an updated weight.
 - **Weighted lottery:** next cards are randomised, where cards struggled with are mathmatically more probable to appear.
 - **Lazy Update:** cards seen often weight's are altered with "pity bonuses" to allow for cards not not seen in a long time to appear.
 
 ### Spaced repetition (FSRS algorithm) - COMING SOON
-For long term retention, with a FCFS algorithm
+For long-term retention, with a FCFS algorithm.
 
 ## Technology Stack
 ### Backend
