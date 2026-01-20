@@ -5,5 +5,5 @@ import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import java.util.List;
 
 public interface StudyEngineService {
-    public List<FlashCardDto> getCramBatch(List<FlashCardDto> flashCardDtoList);
+    public List<FlashCardDto> getCardBatchForCramMode(List<FlashCardDto> flashCardDtoList);
 }
