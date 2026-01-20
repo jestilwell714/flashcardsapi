@@ -3,11 +3,13 @@ package com.myflashcardsapi.flashcards_api.services.impl;
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.services.StudyEngineService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class StudyEngineServiceImpl implements StudyEngineService {
     private final int BATCHNUM = 5;
 
