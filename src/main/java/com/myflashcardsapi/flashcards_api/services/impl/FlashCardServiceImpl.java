@@ -11,10 +11,7 @@ import com.myflashcardsapi.flashcards_api.repositories.DeckRepository;
 import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
-import com.myflashcardsapi.flashcards_api.services.DeckService;
-import com.myflashcardsapi.flashcards_api.services.FlashCardService;
-import com.myflashcardsapi.flashcards_api.services.FolderService;
-import com.myflashcardsapi.flashcards_api.services.TagService;
+import com.myflashcardsapi.flashcards_api.services.*;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +32,16 @@ public class FlashCardServiceImpl implements FlashCardService {
 
     private FlashCardMapperImpl flashCardMapper;
 
-    public FlashCardServiceImpl(FlashCardRepository flashCardRepository, DeckService deckService, TagRepository tagRepository, UserRepository userRepository, FolderService folderService, FlashCardMapperImpl flashCardMapper) {
+    private StudyEngineService studyEngineService;
+
+    public FlashCardServiceImpl(FlashCardRepository flashCardRepository, DeckService deckService, TagRepository tagRepository, UserRepository userRepository, FolderService folderService, FlashCardMapperImpl flashCardMapper, StudyEngineService studyEngineService) {
         this.flashCardRepository = flashCardRepository;
         this.deckService = deckService;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
         this.folderService = folderService;
         this.flashCardMapper = flashCardMapper;
+        this.studyEngineService = studyEngineService;
     }
 
     @Override
@@ -151,6 +151,24 @@ public class FlashCardServiceImpl implements FlashCardService {
             flashCardDtoList.add(flashCardMapper.mapTo(flashCard));
         }
         return flashCardDtoList;
+    }
+
+    @Override
+    public List<FlashCardDto> getFlashCardsForCramByDeckId(Long userId, Long deckId) {
+        List<FlashCardDto> flashCardDtoList = getFlashCardsByDeckIdAndUser(userId,deckId);
+        return studyEngineService.getCardBatchForCramMode(flashCardDtoList);
+    }
+
+    @Override
+    public List<FlashCardDto> getFlashCardsForCramByFolderId(Long userId, Long folderId) {
+        List<FlashCardDto> flashCardDtoList = getFlashCardsInFolder(folderId,userId);
+        return studyEngineService.getCardBatchForCramMode(flashCardDtoList);
+    }
+
+    @Override
+    public List<FlashCardDto> getFlashCardsForCramByTagsId(Long userId, List<Long> tagsId) throws BadRequestException {
+        List<FlashCardDto> flashCardDtoList = getFlashCardsByTagsIdAndUser(tagsId,userId);
+        return studyEngineService.getCardBatchForCramMode(flashCardDtoList);
     }
 
 }
