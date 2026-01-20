@@ -1,6 +1,7 @@
 package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
+import com.myflashcardsapi.flashcards_api.domain.Tag;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.services.FlashCardService;
 import com.myflashcardsapi.flashcards_api.services.impl.FlashCardServiceImpl;
@@ -61,6 +62,23 @@ public class FlashCardController {
     @GetMapping("/folders/{folderId}/flashcards")
     public List<FlashCardDto> getFlashCardsByFolderId(@RequestHeader("X-User-ID") Long userId, @PathVariable Long folderId) {
         return  flashCardService.getFlashCardsInFolder(folderId, userId);
+    }
+
+    @GetMapping("/cram/deck/{deckId}")
+    public List<FlashCardDto> getCramByDeckId(@RequestHeader("X-User-ID") Long userId, @PathVariable Long deckId) {
+        return flashCardService.getFlashCardsForCramByDeckId(userId,deckId);
+    }
+
+
+    @GetMapping("/cram/folder/{folderId}")
+    public List<FlashCardDto> getCramByFolderId(@RequestHeader("X-User-ID") Long userId, @PathVariable Long folderId) {
+        return flashCardService.getFlashCardsForCramByFolderId(userId,folderId);
+    }
+
+
+    @GetMapping("/cram/tags/{tagsId}")
+    public List<FlashCardDto> getCramByTagsId(@RequestHeader("X-User-ID") Long userId, @PathVariable List<Long> tagsId) throws BadRequestException {
+        return flashCardService.getFlashCardsForCramByTagsId(userId,tagsId);
     }
 
     // --- UPDATE ---
