@@ -29,4 +29,6 @@ public class FlashCardDto {
     private Long deckId;
 
     private int difficultyLevel;
+
+    private double weight = 100.0;
 }
