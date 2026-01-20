@@ -1,5 +1,9 @@
 # Java/Spring Boot REST API FlashCards Project
 
+![Status](https://img.shields.io/badge/Status-In--Development-orange?style=flat-square)
+![Java](https://img.shields.io/badge/Java-21-blue?style=flat-square&logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.3-brightgreen?style=flat-square&logo=spring-boot)
+
 ## Duel Study modes
 
 ### Cram mode ("lazy update weight logic")
