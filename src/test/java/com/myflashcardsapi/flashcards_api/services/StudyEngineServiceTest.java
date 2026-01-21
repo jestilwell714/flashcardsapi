@@ -4,8 +4,6 @@ import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.services.impl.StudyEngineServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class StudyEngineServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialize the implementation manually for a unit test
+
         studyEngineService = new StudyEngineServiceImpl();
     }
 
@@ -54,7 +52,6 @@ public class StudyEngineServiceTest {
         int[] counts = new int[6];
         int iterations = 10000;
 
-        // Act
         for (int i = 0; i < iterations; i++) {
             List<FlashCardDto> batch = studyEngineService.getCardBatchForCramMode(deck);
             for (FlashCardDto picked : batch) {
@@ -62,9 +59,7 @@ public class StudyEngineServiceTest {
             }
         }
 
-
-        // Assert
-        // The hard card should be picked significantly more than the easy card
         assertTrue(counts[0] > counts[1] && counts[1] > counts[2] && counts[2] > counts[3] && counts[3] > counts[4] && counts[4] > counts[5]);
+        assertTrue(counts[0] > 0 && counts[1] > 0 && counts[2] > 0 && counts[3] > 0 && counts[4] > 0 && counts[5] > 0);
     }
 }
