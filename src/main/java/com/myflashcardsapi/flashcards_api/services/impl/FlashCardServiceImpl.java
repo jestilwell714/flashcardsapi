@@ -76,10 +76,10 @@ public class FlashCardServiceImpl implements FlashCardService {
                 card.setWeight(Math.min(currentWeight + 50.0,500));
                 break;
             case 3: // Medium, recalled correctly but took a while
-                card.setWeight(Math.min(currentWeight + 100,500));
+                card.setWeight(Math.min(currentWeight + 100.0,500));
                 break;
             case 4: // Very easy, recalled instantly
-                card.setWeight(Math.min(currentWeight + 150,500));
+                card.setWeight(Math.min(currentWeight + 150.0,500));
                 break;
         }
 

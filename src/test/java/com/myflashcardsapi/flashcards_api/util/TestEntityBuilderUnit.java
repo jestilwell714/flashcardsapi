@@ -108,6 +108,7 @@ public class TestEntityBuilderUnit {
                 .answer("A linear data structure that follows the LIFO (Last-In, First-Out) principle. Operations include Push (add) and Pop (remove).")
                 .tags(List.of(dataStructureTag))
                 .deck(deck1)
+                .weight(100)
                 .build();
 
 
@@ -117,6 +118,7 @@ public class TestEntityBuilderUnit {
                 .answer("Linked List")
                 .tags(List.of(dataStructureTag))
                 .deck(deck1)
+                .weight(200)
                 .build();
 
 
@@ -126,6 +128,7 @@ public class TestEntityBuilderUnit {
                 .answer("To arrange elements of a list in a specific order")
                 .tags(List.of(algorithmsTag))
                 .deck(deck1)
+                .weight(450)
                 .build();
 
 

@@ -58,6 +58,7 @@ public class FlashCardServiceTest {
     private FlashCardDto flashCardDto4;
     private FlashCard flashCard;
     private FlashCard flashCard2;
+    private FlashCard flashCard3;
     private FlashCard flashCard4;
     private Deck deck;
     private Deck deck2;
@@ -76,6 +77,7 @@ public class FlashCardServiceTest {
 
         flashCard = testEntityBuilder.getFlashCard1();
         flashCard2 = testEntityBuilder.getFlashCard2();
+        flashCard3 = testEntityBuilder.getFlashCard3();
         flashCard4 = testEntityBuilder.getFlashCard4();
 
         deck = testEntityBuilder.getDeck1();
@@ -136,6 +138,36 @@ public class FlashCardServiceTest {
     void givenInvalidDeckIdWhenCreateFlashcardThenThrowsException() {
         when(mockDeckService.getDeckByIdAndUser(deck.getId(),user.getId())).thenReturn(Optional.empty());
         assertThrows(NoSuchElementException.class, () -> flashcardService.createFlashCard(user.getId(), deck.getId(), flashCardDto));
+    }
+
+    @Test
+    void givenScoreOfMediumIncreaseWeight() {
+        when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard.getId(),user.getId())).thenReturn(Optional.of(flashCard));
+
+        flashcardService.updateWeight(flashCard.getId(),user.getId(),3);
+
+        assertThat(flashCard.getWeight()).isEqualTo(200.0);
+        verify(mockFlashcardRepository).save(flashCard);
+    }
+
+    @Test
+    void givenScoreOfWrongResetWeightToDefault() {
+        when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard2.getId(),user.getId())).thenReturn(Optional.of(flashCard2));
+
+        flashcardService.updateWeight(flashCard2.getId(),user.getId(),1);
+
+        assertThat(flashCard2.getWeight()).isEqualTo(100.0);
+        verify(mockFlashcardRepository).save(flashCard2);
+    }
+
+    @Test
+    void givenScoreOfMediumButScoreIsAlreadyMaxStayAtMax() {
+        when(mockFlashcardRepository.findByIdAndDeckUserId(flashCard3.getId(),user.getId())).thenReturn(Optional.of(flashCard3));
+
+        flashcardService.updateWeight(flashCard3.getId(),user.getId(),3);
+
+        assertThat(flashCard3.getWeight()).isEqualTo(500.0);
+        verify(mockFlashcardRepository).save(flashCard3);
     }
 
     @Test
