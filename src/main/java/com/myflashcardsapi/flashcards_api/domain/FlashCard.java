@@ -39,5 +39,6 @@ public class FlashCard {
     @JoinColumn(name = "deck_id", nullable = false)
     private Deck deck;
 
+    @Column(nullable = false)
     private double weight = 100.0;
 }
