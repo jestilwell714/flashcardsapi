@@ -11,7 +11,7 @@ public interface FlashCardService {
     FlashCardDto createFlashCard(Long userId, Long deckId, FlashCardDto flashCardDto) throws BadRequestException;
 
     @Transactional
-    void updateWeight(Long id, int score);
+    void updateWeight(Long id, Long userId, int score);
 
     FlashCardDto updateFlashCard(Long userId, Long flashCardId, FlashCardDto flashCardDto) throws BadRequestException;
 

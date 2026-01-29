@@ -63,8 +63,8 @@ public class FlashCardServiceImpl implements FlashCardService {
 
     @Transactional
     @Override
-    public void updateWeight(Long id, int score) {
-        FlashCard card = flashCardRepository.findById(id).get();
+    public void updateWeight(Long id, Long userId, int score) {
+        FlashCard card = flashCardRepository.findByIdAndDeckUserId(id,userId).get();
 
         double currentWeight = card.getWeight();
 
