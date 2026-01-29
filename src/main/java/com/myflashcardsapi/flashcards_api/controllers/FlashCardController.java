@@ -32,6 +32,12 @@ public class FlashCardController {
         return new ResponseEntity<>(flashCard, HttpStatus.CREATED);
     }
 
+    @PostMapping("/flashcard/{id}/score")
+    public ResponseEntity<Void> submitScore(@PathVariable Long id, @RequestBody int score, @RequestHeader("X-User-ID") Long userId) {
+        flashCardService.updateWeight(id,userId,score);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     // --- GET ---
     @GetMapping("/flashcards")
     public List<FlashCardDto> getAllUserFlashCards(@RequestHeader("X-User-ID") Long userId) {
