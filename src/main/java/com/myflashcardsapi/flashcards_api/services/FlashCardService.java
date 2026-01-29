@@ -1,14 +1,17 @@
 package com.myflashcardsapi.flashcards_api.services;
 
-import com.myflashcardsapi.flashcards_api.domain.FlashCard;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import org.apache.coyote.BadRequestException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface FlashCardService {
     FlashCardDto createFlashCard(Long userId, Long deckId, FlashCardDto flashCardDto) throws BadRequestException;
+
+    @Transactional
+    void updateWeight(Long id, int score);
 
     FlashCardDto updateFlashCard(Long userId, Long flashCardId, FlashCardDto flashCardDto) throws BadRequestException;
 

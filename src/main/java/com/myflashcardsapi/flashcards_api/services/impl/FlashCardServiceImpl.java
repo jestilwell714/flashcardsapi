@@ -2,18 +2,16 @@ package com.myflashcardsapi.flashcards_api.services.impl;
 
 import com.myflashcardsapi.flashcards_api.domain.Deck;
 import com.myflashcardsapi.flashcards_api.domain.FlashCard;
-import com.myflashcardsapi.flashcards_api.domain.Folder;
 import com.myflashcardsapi.flashcards_api.domain.Tag;
-import com.myflashcardsapi.flashcards_api.domain.dto.DeckDto;
 import com.myflashcardsapi.flashcards_api.domain.dto.FlashCardDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.FlashCardMapperImpl;
-import com.myflashcardsapi.flashcards_api.repositories.DeckRepository;
 import com.myflashcardsapi.flashcards_api.repositories.FlashCardRepository;
 import com.myflashcardsapi.flashcards_api.repositories.TagRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.*;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -61,6 +59,31 @@ public class FlashCardServiceImpl implements FlashCardService {
 
         FlashCard savedFlashCard = flashCardRepository.save(flashCard);
         return flashCardMapper.mapTo(savedFlashCard);
+    }
+
+    @Transactional
+    @Override
+    public void updateWeight(Long id, int score) {
+        FlashCard card = flashCardRepository.findById(id).get();
+
+        double currentWeight = card.getWeight();
+
+        switch (score) {
+            case 1: // "Couldn't recall at all, so reset weight"
+                card.setWeight(100.0);
+                break;
+            case 2: // Hard, took a while to recall and didn't recall it all correctly
+                card.setWeight(Math.min(currentWeight + 50.0,500));
+                break;
+            case 3: // Medium, recalled correctly but took a while
+                card.setWeight(Math.min(currentWeight + 100,500));
+                break;
+            case 4: // Very easy, recalled instantly
+                card.setWeight(Math.min(currentWeight + 150,500));
+                break;
+        }
+
+        flashCardRepository.save(card);
     }
 
     @Override
