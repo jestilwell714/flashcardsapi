@@ -12,6 +12,6 @@ export default function FeedBackControls({onScore}) {
             <button onClick={(e) => handleButtonClick(e,3)}>Okay</button>
             <button onClick={(e) => handleButtonClick(e,4)}>Good</button>
         </div>
-    )
+    );
 }
 

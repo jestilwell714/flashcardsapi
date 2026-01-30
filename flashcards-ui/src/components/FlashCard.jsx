@@ -19,18 +19,13 @@ function FrontSide({question}) {
     );
 }
 
-export default function FlashCard({ question, answer }) {
+export default function FlashCard({ question, answer, onScore }) {
     const [isFlipped, setFlipped] = useState(false);
-
-    function processFeedBack(score) {
-        console.log("Score received:", score);
-        setFlipped(false);
-    }
 
     return (
         <div onClick={() => !isFlipped && setFlipped(true)}>
             {isFlipped ? (
-                <BackSide answer={answer} onScore={processFeedBack} />
+                <BackSide answer={answer} onScore={onScore} />
             ) : (
                 <FrontSide question={question} />
             )}
