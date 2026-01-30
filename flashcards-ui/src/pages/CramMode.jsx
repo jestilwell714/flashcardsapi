@@ -6,11 +6,11 @@ import { useParams } from 'react-router-dom';
 
 
 export default function CramMode() {
-    const params = useParams();
+    const { type, id} = useParams();
     const [cards,setCards] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const fetchMoreCardsUrl = `http://localhost:8080/api/cram/${params.type}/${params.id}/batch`;
+    const fetchMoreCardsUrl = `http://localhost:8080/api/cram/${type}/${id}/batch`;
     const submitScoreUrl = "";
 
     const fetchMoreCards = useCallBack(() => {
@@ -36,7 +36,7 @@ export default function CramMode() {
     }
 
     const submitScore = (score) => {
-        fetch(`${submitScoreUrl}/${id}/score`, {
+        fetch(`${submitScoreUrl}/${cardId}/score`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ score: score })
@@ -60,7 +60,7 @@ export default function CramMode() {
     const card = cards[currentIndex];
     const question = card.question;
     const answer = card.answer;
-    const id = card.id;
+    const cardId = card.id;
 
     return (
         <FlashCard 
