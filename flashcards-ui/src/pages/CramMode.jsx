@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallBack } from 'react';
 import FlashCard from '../components/FlashCard';
 import { useParams } from 'react-router-dom';
 
@@ -10,11 +10,22 @@ export default function CramMode() {
     const [cards,setCards] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    
-    const submitScoreUrl = "";
     const fetchMoreCardsUrl = `http://localhost:8080/api/cram/${params.type}/${params.id}/batch`;
+    const submitScoreUrl = "";
 
-   
+    const fetchMoreCards = useCallBack(() => {
+        fetch(fetchMoreCardsUrl)
+        .then((response) => {
+            return response.json();
+        })
+        .then((newCards) => {
+            setCards((prevDeck) => [...prevDeck, ...newCards]);
+
+        })
+        .catch((error) => {
+            console.error('Error fetching more cards:', error);
+        });
+    });
 
     function newCard() {
         if(currentIndex % 5 == 3) {
@@ -39,25 +50,8 @@ export default function CramMode() {
     }
 
     useEffect(() => {
-        const controller = new AbortController();
-
-        const fetchMoreCards = () => {
-        fetch(fetchMoreCardsUrl)
-        .then((response) => {
-            return response.json();
-        })
-        .then((newCards) => {
-            setCards((prevDeck) => [...prevDeck, ...newCards]);
-
-        })
-        .catch((error) => {
-            console.error('Error fetching more cards:', error);
-        });
-        };
         fetchMoreCards();
-
-        return () => controller.abort();
-    }, [fetchMoreCardsUrl]);
+    }, [fetchMoreCards]);
 
    if (cards.length === 0) {
         return <div className="text-center p-10">Loading deck...</div>;
