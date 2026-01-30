@@ -1,0 +1,52 @@
+import { useEffect, useParams, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
+
+export default function Explorer() {
+    const { type, id } = useParams();
+    const [content,setContent] = useState(null);
+    const {isLoading, setLoading} = useState(false);
+    
+    const fetchContentsUrl = type === "root" ? '' : `${type}/${id}`;
+
+
+    useEffect(() => {
+        setLoading(true);
+
+        fetch(fetchContentsUrl)
+        .then(response => response.json())
+        .then(data => { 
+                setContent(data);
+                setLoading(false);
+            }
+        ).catch(err => console.error("Fetch failed:", err));
+    }, [fetchContentsUrl,setLoading]); 
+
+    const navigate = useNavigate();
+
+    function handleClick(type, id) {
+        if(type !== "flashcard") {
+            navigate(`/explorer/${type}/${id}`);
+        }
+    }
+
+    return (
+        isLoading ? ( 
+            <div>
+                <h1>Loading...</h1>
+            </div> 
+        ) : (
+            <>
+                {content.map((item) => (
+                    <div key={item.id} onClick={() => handleClick(item.type,item.id)}>
+                        <span className="icon">
+                                {item.type === 'folder' ? '📁' : ''}
+                                {item.type === 'deck' ? '🎴' : ''}
+                        </span>
+                        <h3>{item.name}</h3>
+                    </div>
+                ))}
+            </>
+        )
+    );
+}
