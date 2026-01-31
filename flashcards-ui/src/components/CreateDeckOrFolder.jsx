@@ -2,18 +2,19 @@ import { useState } from 'react';
 
 export default function CreateDeckOrFolder(initialData, type, onSubmit) {
     const isEdit = !!initialData;
-    const createDeckUrl = '';
-    const editDeckUrl = '';
-    const createFolderUrl = '';
-    const editFolderUrl = '';
-    const url = type === "folder" ? (isEdit ?  editFolderUrl : createFolderUrl) : (isEdit ?  editDeckUrl : createDeckUrl);
+    const createDeckUrl = 'https://localhost:8080/decks';
+    const createFolderUrl = 'https://localhost:8080/folders';
+
+    const url = type === "folder" ? (isEdit ?  createFolderUrl+'/'+ initialData.id : createFolderUrl) : (isEdit ?  createDeckUrl + '/'+ initialData.id : createDeckUrl);
     const [formData, setFormData] = useState(initialData || {name: ''});
 
     function handleSubmit(e) {
         e.preventDefault();
         fetch(url, {
             method: isEdit ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json',
+                       'X-User-ID': '1'
+            },
             body: JSON.stringify(formData),
         })
         .then(response => {

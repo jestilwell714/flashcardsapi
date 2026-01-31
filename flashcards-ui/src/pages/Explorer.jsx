@@ -19,9 +19,17 @@ export default function Explorer() {
         setSelectedMode("cram");
     }
 
+    function handleCreateMode() {
+        setSelectedMode("create");
+    }
+
+    function handleEditMode() {
+        setSelectedMode("edit");
+    }
+
     return (   
             <div>
-                {selectedMode === "preview" && <PreviewPanel item={selectedItem} type={selectedType} onPlay={handleCramMode}/>} 
+                {selectedMode === "preview" && <PreviewPanel item={selectedItem} type={selectedType} onPlay={handleCramMode} onCreate={handleCreateMode} onEdit={handleEditMode}/>} 
                 {selectedMode === "edit" && <EditPanel item={selectedItem} type={selectedType} />} 
                 {selectedMode === "create" && <CreatePanel item={selectedItem} type={selectedType} />} 
                 {selectedMode === "cram" && <CramMode />} 

@@ -2,15 +2,17 @@ import { useState } from "react";
 
 export default function CreateFlashCard({ initialData }) {
     const isEdit = !!initialData;
-    const createFlashCardUrl = '';
-    const editFlashCardUrl = '';
+    const createFlashCardUrl = 'https://localhost:8080/decks/{deckId}/flashcards';
+    const editFlashCardUrl = 'https://localhost:8080/flashcards/{flashCardId}';
     const [formData, setFormData] = useState(initialData || { question: '', answer: ''});
 
     function handleSubmit(e) {
         e.preventDefault();
         fetch(isEdit ?  editFlashCardUrl : createFlashCardUrl, {
             method: isEdit ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json',
+                       'X-User-ID': '1'
+                    },
             body: JSON.stringify(formData),
         })
         .then(response => {

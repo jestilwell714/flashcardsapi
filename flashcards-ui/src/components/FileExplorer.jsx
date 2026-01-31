@@ -10,11 +10,16 @@ export default function FileExplorer( {onSelectFlashCard} ) {
     const [createType, setCreateType] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     
-    const fetchContentsUrl = type === "root" ? '' : `${type}/${id}`;
+    const fetchContentsUrl = type === "root" ? 'https://localhost:8080/api/flashcards' : `https://localhost:8080/api/${type}s/${id}/flashcards`;
 
 
     useEffect(() => {
-        fetch(fetchContentsUrl)
+        fetch(fetchContentsUrl, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-ID': '1'
+            }
+        })
         .then(response => response.json())
         .then(data => { 
                 setContent(data);

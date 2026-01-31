@@ -1,16 +1,29 @@
-import { useParams } from "react";
 import { useNavigate } from 'react-router-dom';
 
-export default function PreviewPanel( ) { 
-    const { type, id } = useParams();
+export default function PreviewPanel( item, type, onPlay, onCreate, onEdit) { 
     const navigate = useNavigate();
-    const cramModeUrl = type === "root" ? '' : `${type}/${id}`;
+    const cramModeUrl = type === "root" ? 'https://localhost:8080/api/cram' : `https://localhost:8080/api/cram${type}/${item.id}`;
+
+    function handleCreate() {
+        onCreate();
+    }
+
+    function handleEdit() {
+        onEdit();
+    }
+
+    function handlePlay() {
+        navigate({cramModeUrl})
+        onPlay();
+    }
 
     return (
         <div>
-            <h2></h2>
+            <h2>item.name</h2>
             
-            <button onClick={ navigate({cramModeUrl}) }>Play</button>
+            <button onClick={ handlePlay }>Play</button>
+            <button onClick={ handleCreate }>Create</button>
+            <button onClick={ handleEdit }>Edit</button>
         </div>
     );
 }
