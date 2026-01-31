@@ -194,4 +194,10 @@ public class FlashCardServiceImpl implements FlashCardService {
         return studyEngineService.getCardBatchForCramMode(flashCardDtoList);
     }
 
+    @Override
+    public List<FlashCardDto> getFlashCardsForCramByUserId(Long userId) throws BadRequestException {
+        List<FlashCardDto> flashCardDtoList = getAllFlashCardsForUser(userId);
+        return studyEngineService.getCardBatchForCramMode(flashCardDtoList);
+    }
+
 }

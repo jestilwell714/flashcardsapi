@@ -32,4 +32,6 @@ public interface FlashCardService {
     List<FlashCardDto> getFlashCardsForCramByFolderId(Long userId, Long folderId);
 
     List<FlashCardDto> getFlashCardsForCramByTagsId(Long userId, List<Long> tagIds) throws BadRequestException;
+
+    List<FlashCardDto> getFlashCardsForCramByUserId(Long userId) throws BadRequestException;
 }
