@@ -25,11 +25,13 @@ export default function FileExplorer( onSelectFlashCard ) {
     const navigate = useNavigate();
 
     function handleClick(item) {
+        let mode = "preview";
         if(type === "flashcard") {
-            onSelectFlashCard(item)
+            mode = "edit";
         } else {
             navigate(`/explorer/${item.type}/${item.id}}`);
         }
+        onSelectFlashCard(item, item.type, mode);
     }
 
     return (

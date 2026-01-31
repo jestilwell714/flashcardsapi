@@ -5,22 +5,27 @@ import CramMode from "../components/CramMode";
 import { useState } from "react";
 
 export default function Explorer() {
-    const [mode, setMode] = useState("preview");
+    const [selectedMode, setSelectedMode] = useState("preview");
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
 
-    function handleSelectFlashCard(item) {
-        setMode("edit");
+    function handleSelect(item, type, mode) {
+        setSelectedMode(mode);
         setSelectedItem(item);
-        setSelectedType("flashcard");
+        setSelectedType(type);
+    }
+
+    function handleCramMode() {
+        setSelectedMode("cram");
     }
 
     return (   
             <div>
-                {mode === "preview" && <PreviewPanel />} 
-                {mode === "edit" && <EditPanel item={selectedItem} type={selectedType} />} 
-                {mode === "cram" && <CramMode />} 
-                <FileExplorer onSelectItem={handleSelectFlashCard}/>
-             </div>
+                {selectedMode === "preview" && <PreviewPanel item={selectedItem} type={selectedType} onPlay={handleCramMode}/>} 
+                {selectedMode === "edit" && <EditPanel item={selectedItem} type={selectedType} />} 
+                {selectedMode === "create" && <CreatePanel item={selectedItem} type={selectedType} />} 
+                {selectedMode === "cram" && <CramMode />} 
+                <FileExplorer onSelectItem={handleSelect}/>
+            </div>
     );
 }
