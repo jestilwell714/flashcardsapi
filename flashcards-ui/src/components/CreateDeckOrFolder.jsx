@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function CreateDeckOrFolder(initialData, type) {
+export default function CreateDeckOrFolder(initialData, type, onSubmit) {
     const isEdit = !!initialData;
     const createDeckUrl = '';
     const editDeckUrl = '';
@@ -20,6 +20,7 @@ export default function CreateDeckOrFolder(initialData, type) {
             if (!response.ok) console.error("Database didn't create/edit deck");
         })
         .catch(error => console.error("Connection error", error));
+        onSubmit();
     }
 
     function handleChange(e) {
