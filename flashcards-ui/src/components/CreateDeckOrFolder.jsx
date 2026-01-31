@@ -18,9 +18,10 @@ export default function CreateDeckOrFolder(initialData, type, onSubmit) {
         })
         .then(response => {
             if (!response.ok) console.error("Database didn't create/edit deck");
+            onSubmit();
         })
         .catch(error => console.error("Connection error", error));
-        onSubmit();
+        
     }
 
     function handleChange(e) {
