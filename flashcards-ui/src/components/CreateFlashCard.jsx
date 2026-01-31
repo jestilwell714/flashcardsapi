@@ -8,7 +8,7 @@ export default function CreateFlashCard({ initialData }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        fetch(isEdit ? createFlashCardUrl : editFlashCardUrl, {
+        fetch(isEdit ?  editFlashCardUrl : createFlashCardUrl, {
             method: isEdit ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(formData),
