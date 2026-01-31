@@ -2,7 +2,7 @@ import { useEffect, useParams, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Explorer() {
+export default function FileExplorer( onSelectFlashCard ) {
     const { type, id } = useParams();
     const [content,setContent] = useState(null);
     const {isLoading, setLoading} = useState(false);
@@ -24,9 +24,11 @@ export default function Explorer() {
 
     const navigate = useNavigate();
 
-    function handleClick(type, id) {
-        if(type !== "flashcard") {
-            navigate(`/explorer/${type}/${id}`);
+    function handleClick(item) {
+        if(type === "flashcard") {
+            onSelectFlashCard(item)
+        } else {
+            navigate(`/explorer/${item.type}/${item.id}}`);
         }
     }
 
@@ -38,7 +40,7 @@ export default function Explorer() {
         ) : (
             <>
                 {content.map((item) => (
-                    <div key={item.id} onClick={() => handleClick(item.type,item.id)}>
+                    <div key={item.id} onClick={() => handleClick(item)}>
                         <span className="icon">
                                 {item.type === 'folder' ? '📁' : ''}
                                 {item.type === 'deck' ? '🎴' : ''}
