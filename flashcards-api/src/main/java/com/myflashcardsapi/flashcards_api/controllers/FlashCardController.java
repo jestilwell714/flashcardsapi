@@ -88,6 +88,11 @@ public class FlashCardController {
         return flashCardService.getFlashCardsForCramByTagsId(userId,tagsId);
     }
 
+    @GetMapping("/cram")
+    public List<FlashCardDto> getCramByUserId(@RequestHeader("X-User-ID") Long userId) throws BadRequestException {
+        return flashCardService.getFlashCardsForCramByUserId(userId);
+    }
+
     // --- UPDATE ---
     @PutMapping("/flashcards/{flashCardId}")
     public ResponseEntity<FlashCardDto> updateFlashCard(@RequestBody FlashCardDto flashCardDto, @RequestHeader("X-User-ID") Long userId, @PathVariable Long flashCardId) throws BadRequestException {
