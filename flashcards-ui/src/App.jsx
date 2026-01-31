@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Explorer from './pages/Explorer';
+import Explorer from './components/FileExplorer';
 
 function App() {
 
