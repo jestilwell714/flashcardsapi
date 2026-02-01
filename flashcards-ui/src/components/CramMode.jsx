@@ -74,7 +74,7 @@ export default function CramMode() {
             key={currentIndex}
             question={question}
             answer={answer}
-            newCard={submitScore}
+            onScore={submitScore}
         />
     )
 }
