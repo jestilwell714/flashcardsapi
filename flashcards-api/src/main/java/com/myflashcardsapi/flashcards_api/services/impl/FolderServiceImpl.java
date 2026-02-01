@@ -181,7 +181,7 @@ public class FolderServiceImpl implements FolderService {
         }
 
         for(Deck d : decks) {
-            list.add(new ItemDto(d.getId(),d.getName(),"decks"));
+            list.add(new ItemDto(d.getId(),d.getName(),"deck"));
         }
 
         return list;
@@ -199,7 +199,7 @@ public class FolderServiceImpl implements FolderService {
         }
 
         for(Deck d : decks) {
-            list.add(new ItemDto(d.getId(),d.getName(),"decks"));
+            list.add(new ItemDto(d.getId(),d.getName(),"deck"));
         }
 
         return list;
