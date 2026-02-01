@@ -16,6 +16,10 @@ public class FolderMapperImpl implements Mapper<FolderDto, Folder> {
 
     private ModelMapper modelMapper;
 
+    public FolderMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     /**
      * We want to map a FolderDto object to a Folder
      * @param folder

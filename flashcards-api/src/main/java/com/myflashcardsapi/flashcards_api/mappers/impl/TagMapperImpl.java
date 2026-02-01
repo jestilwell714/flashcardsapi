@@ -14,6 +14,10 @@ public class TagMapperImpl implements Mapper<TagDto, Tag> {
 
     private ModelMapper modelMapper;
 
+    public TagMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     /**
      * We want to map a TagDto object to a Tag
      * @param tag

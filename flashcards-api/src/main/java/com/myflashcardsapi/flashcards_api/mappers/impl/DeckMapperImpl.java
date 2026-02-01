@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 public class DeckMapperImpl implements Mapper<DeckDto, Deck> {
     private ModelMapper modelMapper;
 
+    public DeckMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
     /**
      * We want to map a Deck object to a DeckDto
      * @param deck

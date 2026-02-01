@@ -14,6 +14,10 @@ public class UserMapperImpl implements Mapper<UserDto, User> {
 
     private ModelMapper modelMapper;
 
+    public UserMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     /**
      * We want to map a UserDto object to a User
      * @param user
