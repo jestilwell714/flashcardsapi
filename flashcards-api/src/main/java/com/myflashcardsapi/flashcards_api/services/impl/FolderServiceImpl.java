@@ -23,8 +23,9 @@ public class FolderServiceImpl implements FolderService {
     private DeckRepository deckRepository;
     private FolderMapperImpl folderMapper;
 
-    public FolderServiceImpl(FolderRepository folderRepository, UserRepository userRepository, FolderMapperImpl folderMapper) {
+    public FolderServiceImpl(FolderRepository folderRepository, DeckRepository deckRepository, UserRepository userRepository, FolderMapperImpl folderMapper) {
         this.folderRepository = folderRepository;
+        this.deckRepository = deckRepository;
         this.userRepository = userRepository;
         this.folderMapper = folderMapper;
     }
