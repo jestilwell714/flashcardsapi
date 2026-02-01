@@ -14,6 +14,10 @@ public class FlashCardMapperImpl implements Mapper<FlashCardDto, FlashCard> {
 
     private ModelMapper modelMapper;
 
+    public FlashCardMapperImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     /**
      * We want to map a FlashCard object to a FlashCardDto
      * @param flashCard

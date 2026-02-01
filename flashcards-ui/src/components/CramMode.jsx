@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallBack } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import FlashCard from './FlashCard';
 import { useParams } from 'react-router-dom';
 
@@ -10,10 +10,10 @@ export default function CramMode() {
     const [cards,setCards] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const fetchMoreCardsUrl = `http://localhost:8080/api/cram/${type}/${id}/batch`;
-    const submitScoreUrl = 'http://localhose:8080/flashcard';
+    const fetchMoreCardsUrl = type === "root" ? `http://localhost:8080/api/cram` : `http://localhost:8080/api/cram/${type}/${id}`;
+    const submitScoreUrl = 'http://localhost:8080/api/flashcard';
 
-    const fetchMoreCards = useCallBack(() => {
+    const fetchMoreCards = useCallback(() => {
         fetch(fetchMoreCardsUrl, {
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export default function CramMode() {
         .catch((error) => {
             console.error('Error fetching more cards:', error);
         });
-    });
+    }, [fetchMoreCardsUrl]);
 
     function newCard() {
         if(currentIndex % 5 == 3) {
@@ -46,7 +46,7 @@ export default function CramMode() {
             headers: { 'Content-Type': 'application/json',
                        'X-User-ID': '1'
                      },
-            body: JSON.stringify({ score: score })
+            body: JSON.stringify(score)
         })
         .then(response => {
             if (!response.ok) console.error("Database didn't update the score");
