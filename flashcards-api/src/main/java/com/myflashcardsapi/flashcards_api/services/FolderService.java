@@ -1,6 +1,7 @@
 package com.myflashcardsapi.flashcards_api.services;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
+import com.myflashcardsapi.flashcards_api.domain.dto.ItemDto;
 import org.apache.coyote.BadRequestException;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface FolderService {
     List<Long> findAllDescendantFolderIds(Long folderId, Long userId);
 
     void findChildrenFoldersRecursive(Long parentId, Long userId, Set<Long> ids);
+
+    List<ItemDto> getFolderContents(Long folderId, Long userId);
+
+    List<ItemDto> getRootContents(Long userId);
 }

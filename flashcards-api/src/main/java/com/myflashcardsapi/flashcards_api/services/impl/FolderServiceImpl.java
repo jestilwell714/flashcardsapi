@@ -1,9 +1,12 @@
 package com.myflashcardsapi.flashcards_api.services.impl;
 
+import com.myflashcardsapi.flashcards_api.domain.Deck;
 import com.myflashcardsapi.flashcards_api.domain.Folder;
 import com.myflashcardsapi.flashcards_api.domain.User;
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
+import com.myflashcardsapi.flashcards_api.domain.dto.ItemDto;
 import com.myflashcardsapi.flashcards_api.mappers.impl.FolderMapperImpl;
+import com.myflashcardsapi.flashcards_api.repositories.DeckRepository;
 import com.myflashcardsapi.flashcards_api.repositories.FolderRepository;
 import com.myflashcardsapi.flashcards_api.repositories.UserRepository;
 import com.myflashcardsapi.flashcards_api.services.FolderService;
@@ -17,7 +20,7 @@ public class FolderServiceImpl implements FolderService {
 
     private UserRepository userRepository;
     private FolderRepository folderRepository;
-
+    private DeckRepository deckRepository;
     private FolderMapperImpl folderMapper;
 
     public FolderServiceImpl(FolderRepository folderRepository, UserRepository userRepository, FolderMapperImpl folderMapper) {
@@ -163,5 +166,41 @@ public class FolderServiceImpl implements FolderService {
                 findChildrenFoldersRecursive(child.getId(), userId, ids);
             }
         }
+    }
+
+    @Override
+    public List<ItemDto> getFolderContents(Long folderId, Long userId) {
+        List<Folder> folders = folderRepository.findByParentFolderIdAndUserId(folderId, userId);
+        List<Deck> decks = deckRepository.findByFolderIdAndUserId(folderId,userId);
+
+        List<ItemDto> list = new ArrayList<>();
+
+        for(Folder f : folders) {
+            list.add(new ItemDto(f.getId(),f.getName(),"folder"));
+        }
+
+        for(Deck d : decks) {
+            list.add(new ItemDto(d.getId(),d.getName(),"decks"));
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<ItemDto> getRootContents(Long userId) {
+        List<Folder> folders = folderRepository.findByParentFolderIsNullAndUserId(userId);
+        List<Deck> decks = deckRepository.findByFolderIsNullAndUserId(userId);
+
+        List<ItemDto> list = new ArrayList<>();
+
+        for(Folder f : folders) {
+            list.add(new ItemDto(f.getId(),f.getName(),"folder"));
+        }
+
+        for(Deck d : decks) {
+            list.add(new ItemDto(d.getId(),d.getName(),"decks"));
+        }
+
+        return list;
     }
 }
