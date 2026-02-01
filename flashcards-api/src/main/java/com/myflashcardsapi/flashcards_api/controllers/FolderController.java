@@ -55,7 +55,7 @@ public class FolderController {
         return folderService.getRootContents(userId);
     }
 
-    @GetMapping("/content/{folderId")
+    @GetMapping("/content/{folderId}")
     public List<ItemDto> getContentsByFolderId(@PathVariable Long folderId, @RequestHeader("X-User-ID") Long userId) {
         return folderService.getFolderContents(folderId,userId);
     }
