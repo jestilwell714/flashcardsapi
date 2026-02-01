@@ -9,6 +9,7 @@ export default function FileExplorer( {onSelectItem} ) {
     const [isCreate, setIsCreate] = useState(false);
     const [createType, setCreateType] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
     
     let fetchContentsUrl = type === "deck" ? `http://localhost:8080/api/decks/${id}/flashcards` : (type === "root" ? `http://localhost:8080/api/content` : `http://localhost:8080/api/content/${id}`);
 
@@ -28,7 +29,7 @@ export default function FileExplorer( {onSelectItem} ) {
             }
             }
         ).catch(err => console.error("Fetch failed:", err));
-    }, [fetchContentsUrl]); 
+    }, [fetchContentsUrl,refreshKey]); 
 
     const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ export default function FileExplorer( {onSelectItem} ) {
 
     function handleSubmit() {
         setIsCreate(false);
+        setRefreshKey(prev => prev +1);
     }
 
     return (
@@ -69,14 +71,14 @@ export default function FileExplorer( {onSelectItem} ) {
                         )}
                     </nav>
                 </li>
-                {isCreate ? <CreateDeckOrFolder type={createType} onSubmit={handleSubmit}/> : ''}
+                {isCreate ? <CreateDeckOrFolder parentId={type === "root" ? null : id} initialData={null} type={createType} onSubmit={handleSubmit}/> : ''}
                 {content.map((item) => (
                     <li key={`${item.type}-${item.id}`} onClick={() => handleClick(item)}>
                         <span className="icon">
                                 {item.type === "folder" ? '📁' : ''}
                                 {item.type === "deck" ? '🎴' : ''}
                         </span>
-                        <h3>{item.name}</h3>
+                        <h3>{item.type == null ? item.question : item.name}</h3>
                     </li>
                 ))}
             </ul>
