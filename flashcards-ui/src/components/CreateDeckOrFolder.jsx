@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-export default function CreateDeckOrFolder(initialData, type, onSubmit) {
+export default function CreateDeckOrFolder( {parentId, initialData, type, onSubmit} ) {
     const isEdit = !!initialData;
-    const createDeckUrl = 'http://localhost:8080/decks';
-    const createFolderUrl = 'http://localhost:8080/folders';
+    const createDeckUrl = `http://localhost:8080/api/decks`;
+    const createFolderUrl = `http://localhost:8080/api/folders`;
 
-    const url = type === "folder" ? (isEdit ?  createFolderUrl+'/'+ initialData.id : createFolderUrl) : (isEdit ?  createDeckUrl + '/'+ initialData.id : createDeckUrl);
-    const [formData, setFormData] = useState(initialData || {name: ''});
+    const url = type === "folder" ? (isEdit ?  createFolderUrl+'/'+ initialData.id: createFolderUrl) : (isEdit ?  createDeckUrl + '/'+ initialData.id : createDeckUrl);
+    const [formData, setFormData] = useState(initialData || {name: '', parentFolderId: parentId});
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -35,7 +35,7 @@ export default function CreateDeckOrFolder(initialData, type, onSubmit) {
                 <input
                     name="name"
                     placeholder="name"
-                    value={formData}
+                    value={formData.name}
                     onChange={handleChange}>
                 </input>
             </form>
