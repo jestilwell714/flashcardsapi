@@ -1,17 +1,16 @@
-import { useEffect, useParams, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
 import CreateDeckOrFolder from "./CreateDeckOrFolder";
 
 
-export default function FileExplorer( {onSelectFlashCard} ) {
+export default function FileExplorer( {onSelectItem} ) {
     const { type, id } = useParams();
-    const [content,setContent] = useState(null);
+    const [content,setContent] = useState([]);
     const [isCreate, setIsCreate] = useState(false);
     const [createType, setCreateType] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     
-    const fetchContentsUrl = type === "root" ? 'https://localhost:8080/api/flashcards' : `https://localhost:8080/api/${type}s/${id}/flashcards`;
-
+    let fetchContentsUrl = type === "deck" ? `http://localhost:8080/api/decks/${id}/flashcards` : (type === "root" ? `http://localhost:8080/api/content` : `http://localhost:8080/api/content/${id}`);
 
     useEffect(() => {
         fetch(fetchContentsUrl, {
@@ -22,7 +21,11 @@ export default function FileExplorer( {onSelectFlashCard} ) {
         })
         .then(response => response.json())
         .then(data => { 
+                if (Array.isArray(data)) {
                 setContent(data);
+            } else {
+                setContent([data]);
+            }
             }
         ).catch(err => console.error("Fetch failed:", err));
     }, [fetchContentsUrl]); 
@@ -31,12 +34,12 @@ export default function FileExplorer( {onSelectFlashCard} ) {
 
     function handleClick(item) {
         let mode = "preview";
-        if(type === "flashcard") {
+        if(type == null) {
             mode = "edit";
         } else {
-            navigate(`/explorer/${item.type}/${item.id}}`);
+            navigate(`/explorer/${item.type}/${item.id}`);
         }
-        onSelectFlashCard(item, item.type, mode);
+        onSelectItem(item, item.type, mode);
     }
 
     function handleCreate(type ) {
@@ -68,10 +71,10 @@ export default function FileExplorer( {onSelectFlashCard} ) {
                 </li>
                 {isCreate ? <CreateDeckOrFolder type={createType} onSubmit={handleSubmit}/> : ''}
                 {content.map((item) => (
-                    <li key={item.id} onClick={() => handleClick(item)}>
+                    <li key={`${item.type}-${item.id}`} onClick={() => handleClick(item)}>
                         <span className="icon">
-                                {item.type === 'folder' ? '📁' : ''}
-                                {item.type === 'deck' ? '🎴' : ''}
+                                {item.type === "folder" ? '📁' : ''}
+                                {item.type === "deck" ? '🎴' : ''}
                         </span>
                         <h3>{item.name}</h3>
                     </li>
