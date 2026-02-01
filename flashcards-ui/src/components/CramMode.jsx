@@ -11,7 +11,7 @@ export default function CramMode() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const fetchMoreCardsUrl = `http://localhost:8080/api/cram/${type}/${id}/batch`;
-    const submitScoreUrl = 'https://localhose:8080/flashcard';
+    const submitScoreUrl = 'http://localhose:8080/flashcard';
 
     const fetchMoreCards = useCallBack(() => {
         fetch(fetchMoreCardsUrl, {

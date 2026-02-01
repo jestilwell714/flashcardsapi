@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PreviewPanel( item, type, onPlay, onCreate, onEdit) { 
     const navigate = useNavigate();
-    const cramModeUrl = type === "root" ? 'https://localhost:8080/api/cram' : `https://localhost:8080/api/cram${type}/${item.id}`;
+    const cramModeUrl = type === "root" ? 'http://localhost:8080/api/cram' : `http://localhost:8080/api/cram${type}/${item.id}`;
 
     function handleCreate() {
         onCreate();

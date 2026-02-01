@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 export default function CreateDeckOrFolder(initialData, type, onSubmit) {
     const isEdit = !!initialData;
-    const createDeckUrl = 'https://localhost:8080/decks';
-    const createFolderUrl = 'https://localhost:8080/folders';
+    const createDeckUrl = 'http://localhost:8080/decks';
+    const createFolderUrl = 'http://localhost:8080/folders';
 
     const url = type === "folder" ? (isEdit ?  createFolderUrl+'/'+ initialData.id : createFolderUrl) : (isEdit ?  createDeckUrl + '/'+ initialData.id : createDeckUrl);
     const [formData, setFormData] = useState(initialData || {name: ''});

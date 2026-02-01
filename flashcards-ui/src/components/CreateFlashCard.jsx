@@ -2,8 +2,8 @@ import { useState } from "react";
 
 export default function CreateFlashCard({ initialData }) {
     const isEdit = !!initialData;
-    const createFlashCardUrl = 'https://localhost:8080/decks/{deckId}/flashcards';
-    const editFlashCardUrl = 'https://localhost:8080/flashcards/{flashCardId}';
+    const createFlashCardUrl = 'http://localhost:8080/decks/{deckId}/flashcards';
+    const editFlashCardUrl = 'http://localhost:8080/flashcards/{flashCardId}';
     const [formData, setFormData] = useState(initialData || { question: '', answer: ''});
 
     function handleSubmit(e) {
