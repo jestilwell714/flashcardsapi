@@ -60,7 +60,7 @@ public class DeckController {
         return new ResponseEntity<>(deck,HttpStatus.OK);
     }
 
-    @DeleteMapping("/deck/{deckId}")
+    @DeleteMapping("/decks/{deckId}")
     public ResponseEntity<Void> deleteDeckById(@PathVariable Long deckId, @RequestHeader("X-User-ID") Long userId) {
         deckService.deleteDeck(userId,deckId);
         return new ResponseEntity<>(HttpStatus.OK);

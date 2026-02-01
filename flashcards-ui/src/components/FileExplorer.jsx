@@ -54,6 +54,33 @@ export default function FileExplorer( {onSelectItem} ) {
         setRefreshKey(prev => prev +1);
     }
 
+    function handleDelete(e,item) {
+        e.stopPropagation();
+        const itemType = item.type || "flashcard";
+        const confirmed = window.confirm(`Are you sure you want to delete this ${item.type}?`);
+
+        if (confirmed) {
+            executeDelete(item.id, itemType);
+        }
+    }
+
+    const executeDelete = (itemId, itemType) => {
+        
+        fetch(`http://localhost:8080/api/${itemType}s/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-User-ID': '1'
+        }
+        })
+        .then(response => {
+            if (response.ok) {
+                setRefreshKey(prev => prev + 1);
+            }
+        })
+        .catch(err => console.error("Delete error:", err));
+        }
+
+
     return (
             <ul>
                 <li>
@@ -79,6 +106,7 @@ export default function FileExplorer( {onSelectItem} ) {
                                 {item.type === "deck" ? '🎴' : ''}
                         </span>
                         <h3>{item.type == null ? item.question : item.name}</h3>
+                        <button onClick={(e) => handleDelete(e,item) }>Delete</button>
                     </li>
                 ))}
             </ul>
