@@ -81,7 +81,7 @@ public class FolderServiceTest {
         when(mockFolderRepository.save(folder2)).thenReturn(folder2);
         when(mockFolderMapper.mapTo(folder2)).thenReturn(folderDto2);
 
-        FolderDto createdFolder = folderService.createFolder(user.getId(),folder.getId(),folderDto2);
+        FolderDto createdFolder = folderService.createFolder(user.getId(),folderDto2);
         assert(createdFolder.getName().equals(folderDto2.getName()));
         assert(createdFolder.getId().equals(folderDto2.getId()));
         assert(createdFolder.getParentFolderId().equals(folderDto2.getParentFolderId()));
@@ -94,7 +94,7 @@ public class FolderServiceTest {
         when(mockFolderRepository.findByIdAndUserId(folder.getId(), user.getId())).thenReturn(Optional.of(folder));
         when(mockFolderRepository.existsByNameIgnoreCaseAndParentFolderIdAndUserId(folder2.getName(),folder.getId(), user.getId())).thenReturn(true);
 
-        assertThrows(BadRequestException.class, () -> folderService.createFolder(user.getId(),folder.getId(),folderDto2));
+        assertThrows(BadRequestException.class, () -> folderService.createFolder(user.getId(),folderDto2));
     }
 
     @Test

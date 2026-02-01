@@ -23,9 +23,9 @@ public class FolderController {
     }
 
     // --- CREATE ---
-    @PostMapping("/folders/{parentFolderId}")
-    public ResponseEntity<FolderDto> createFolder(@RequestBody FolderDto folderDto,@PathVariable Long parentFolderId, @RequestHeader("X-User-ID") Long userId) throws BadRequestException {
-        FolderDto folder = folderService.createFolder(userId,parentFolderId,folderDto);
+    @PostMapping("/folders")
+    public ResponseEntity<FolderDto> createFolder(@RequestBody FolderDto folderDto, @RequestHeader("X-User-ID") Long userId) throws BadRequestException {
+        FolderDto folder = folderService.createFolder(userId,folderDto);
         return new ResponseEntity<>(folder, HttpStatus.CREATED);
     }
 

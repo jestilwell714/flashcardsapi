@@ -32,7 +32,7 @@ public class FolderServiceImpl implements FolderService {
 
 
     @Override
-    public FolderDto createFolder(Long userId, Long parentFolderId, FolderDto folderDto) throws BadRequestException {
+    public FolderDto createFolder(Long userId, FolderDto folderDto) throws BadRequestException {
         User user = userRepository.findById(userId).get();
 
         Folder parentFolder = null;
