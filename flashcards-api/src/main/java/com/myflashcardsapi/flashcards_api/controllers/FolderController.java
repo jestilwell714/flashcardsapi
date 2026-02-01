@@ -1,6 +1,7 @@
 package com.myflashcardsapi.flashcards_api.controllers;
 
 import com.myflashcardsapi.flashcards_api.domain.dto.FolderDto;
+import com.myflashcardsapi.flashcards_api.domain.dto.ItemDto;
 import com.myflashcardsapi.flashcards_api.services.FolderService;
 import com.myflashcardsapi.flashcards_api.services.impl.FolderServiceImpl;
 import org.apache.coyote.BadRequestException;
@@ -47,6 +48,16 @@ public class FolderController {
         } catch(NoSuchElementException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/content")
+    public List<ItemDto> getContentsByRoot(@RequestHeader("X-User-ID") Long userId) {
+        return folderService.getRootContents(userId);
+    }
+
+    @GetMapping("/content/{folderId")
+    public List<ItemDto> getContentsByFolderId(@PathVariable Long folderId, @RequestHeader("X-User-ID") Long userId) {
+        return folderService.getFolderContents(folderId,userId);
     }
 
     // --- UPDATE ---
