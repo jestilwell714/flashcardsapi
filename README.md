@@ -23,3 +23,7 @@ For long-term retention, with a FCFS algorithm.
 * **Build Tool:** Maven
 
 ### Frontend
+* **Language:** JavaScript
+* **Libraries** React 19.2.0, React Router 7.13.0
+* **Styling** Tailwind CSS 4.1.18
+* **Build Tool:** Vite
