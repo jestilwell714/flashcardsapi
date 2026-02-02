@@ -3,6 +3,7 @@
 ![Status](https://img.shields.io/badge/Status-In--Development-orange?style=flat-square)
 ![Java](https://img.shields.io/badge/Java-21-blue?style=flat-square&logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.3-brightgreen?style=flat-square&logo=spring-boot)
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react&logoColor=black)
 
 ## Duel Study modes
 
